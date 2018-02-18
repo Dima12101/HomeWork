@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SortingColumns", "SortingColumns\SortingColumns.csproj", "{BE8214A8-7EAC-464E-A17B-6226820961DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE8214A8-7EAC-464E-A17B-6226820961DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE8214A8-7EAC-464E-A17B-6226820961DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE8214A8-7EAC-464E-A17B-6226820961DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE8214A8-7EAC-464E-A17B-6226820961DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2BA208DC-405B-4956-AB5B-BF1417A91D47}
+	EndGlobalSection
+EndGlobal
