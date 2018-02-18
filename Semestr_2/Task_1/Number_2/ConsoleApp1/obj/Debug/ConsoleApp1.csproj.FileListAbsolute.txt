@@ -1,6 +1,0 @@
-C:\Proga\Litvinov\GitHub\HomeWork\Semestr_2\Task_1\Number_2\ConsoleApp1\bin\Debug\ConsoleApp1.exe
-C:\Proga\Litvinov\GitHub\HomeWork\Semestr_2\Task_1\Number_2\ConsoleApp1\bin\Debug\ConsoleApp1.pdb
-C:\Proga\Litvinov\GitHub\HomeWork\Semestr_2\Task_1\Number_2\ConsoleApp1\obj\Debug\ConsoleApp1.csprojResolveAssemblyReference.cache
-C:\Proga\Litvinov\GitHub\HomeWork\Semestr_2\Task_1\Number_2\ConsoleApp1\obj\Debug\ConsoleApp1.csproj.CoreCompileInputs.cache
-C:\Proga\Litvinov\GitHub\HomeWork\Semestr_2\Task_1\Number_2\ConsoleApp1\obj\Debug\ConsoleApp1.exe
-C:\Proga\Litvinov\GitHub\HomeWork\Semestr_2\Task_1\Number_2\ConsoleApp1\obj\Debug\ConsoleApp1.pdb
