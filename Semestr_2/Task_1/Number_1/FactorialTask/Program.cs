@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApp1
+namespace FactorialTask
 {
 	class Program
 	{
@@ -14,6 +14,7 @@ namespace ConsoleApp1
 			Console.Write(Factorial(digit));
 			Console.ReadKey();
 		}
+
 		private static int Factorial(int digit)
 		{
 			if (digit <= 1)
