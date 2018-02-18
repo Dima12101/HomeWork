@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApp1
+namespace SortArray
 {
 	class Program
 	{
@@ -29,6 +29,7 @@ namespace ConsoleApp1
 			}
 			Console.ReadKey();
 		}
+
 		static void GenerationArray(int[] arr)
 		{
 			Random rand = new Random();
@@ -37,6 +38,7 @@ namespace ConsoleApp1
 				arr[i] = rand.Next(1, 30);
 			}
 		}
+
 		static void BubbleSort(int[] arr)
 		{
 			bool stop = false;
