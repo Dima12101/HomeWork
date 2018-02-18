@@ -1,0 +1,6 @@
+C:\Proga\Litvinov\Dz_1\ConsoleApp1\bin\Debug\ConsoleApp1.exe
+C:\Proga\Litvinov\Dz_1\ConsoleApp1\bin\Debug\ConsoleApp1.pdb
+C:\Proga\Litvinov\Dz_1\ConsoleApp1\obj\Debug\ConsoleApp1.csprojResolveAssemblyReference.cache
+C:\Proga\Litvinov\Dz_1\ConsoleApp1\obj\Debug\ConsoleApp1.csproj.CoreCompileInputs.cache
+C:\Proga\Litvinov\Dz_1\ConsoleApp1\obj\Debug\ConsoleApp1.exe
+C:\Proga\Litvinov\Dz_1\ConsoleApp1\obj\Debug\ConsoleApp1.pdb
