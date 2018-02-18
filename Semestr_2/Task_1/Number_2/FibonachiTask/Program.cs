@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApp1
+namespace FibonachiTask
 {
 	class Program
 	{
@@ -14,15 +14,25 @@ namespace ConsoleApp1
 			Console.Write(Fibonachi(index));
 			Console.ReadKey();
 		}
-		private static int Fibonachi(int index)
+
+		static int Fibonachi(int index)
 		{
+			var result = 0;
+			var prevOne = 1;
+			var prevTwo = 1;
 			if (index <= 1)
 			{
 				return 1;
 			}
 			else
 			{
-				return Fibonachi(index - 1) + Fibonachi(index - 2);
+				for (var i = 2; i <= index; i++)
+				{
+					result = prevOne + prevTwo;
+					prevOne = prevTwo;
+					prevTwo = result;
+				}
+				return result;
 			}
 		}
 	}
