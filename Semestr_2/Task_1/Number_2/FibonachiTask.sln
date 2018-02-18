@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonachiTask", "ConsoleApp1\FibonachiTask.csproj", "{B6AE0A60-A501-4A4F-A438-9A36A8848A3A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonachiTask", "FibonachiTask\FibonachiTask.csproj", "{B6AE0A60-A501-4A4F-A438-9A36A8848A3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {96D78ACF-F4E8-4FFB-8844-C1FE7591A2AB}
+		SolutionGuid = {5F7480BD-4114-44C0-A277-47E59E97AAEB}
 	EndGlobalSection
 EndGlobal
