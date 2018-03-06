@@ -2,12 +2,14 @@
 {
 	using System;
 	using Microsoft.VisualStudio.TestTools.UnitTesting;
-	using StackProrgam;
+	using StackProgram;
+
 	[TestClass]
 	public class StackTest
 	{
 		private Stack stack;
 		[TestInitialize]
+
 		public void Initialize()
 		{
 			stack = new Stack();
@@ -17,7 +19,7 @@
 		public void TestPush()
 		{
 			stack.Push(1);
-			Assert.IsFalse(stack.IsEmpty());
+			Assert.IsFalse(stack.IsEmpty);
 		}
 
 		[TestMethod]
@@ -44,3 +46,4 @@
 		}
 	}
 }
+

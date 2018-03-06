@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StackProrgam
+namespace StackProgram
 {
 	public class Stack
 	{
@@ -9,13 +9,16 @@ namespace StackProrgam
 			public int Value { get; set; }
 			public Node Next { get; set; }
 		}
-		private Node head = null;
+
+		private Node head;
 
 		public void Push(int value)
 		{
-			Node newNode = new Node();
-			newNode.Next = head;
-			newNode.Value = value;
+			var newNode = new Node()
+			{
+				Next = head,
+				Value = value
+			};
 			head = newNode;
 		}
 
@@ -30,16 +33,6 @@ namespace StackProrgam
 			return valueInHeadStack;
 		}
 
-		public bool IsEmpty()
-		{
-			if (head == null)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
+		public bool IsEmpty => head == null;
 	}
 }

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6682778B-3245-4EB3-B6A2-FFA8F8CCE29A}</ProjectGuid>
+    <ProjectGuid>{0974037A-F1F1-4DAE-B3A9-47E13EBD1E3A}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>StackProrgam</RootNamespace>
-    <AssemblyName>StackProrgam</AssemblyName>
+    <RootNamespace>StackCalculatorProgram</RootNamespace>
+    <AssemblyName>StackCalculatorProgram</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -42,9 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calculator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Stack.cs" />
+    <Compile Include="IStack.cs" />
+    <Compile Include="Stack_array.cs" />
+    <Compile Include="Stack_list.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

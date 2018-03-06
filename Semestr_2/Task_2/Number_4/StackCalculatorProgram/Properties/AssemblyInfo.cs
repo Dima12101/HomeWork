@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("StackProrgam")]
+[assembly: AssemblyTitle("StackCalculatorProgram")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("StackProrgam")]
+[assembly: AssemblyProduct("StackCalculatorProgram")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("6682778b-3245-4eb3-b6a2-ffa8f8cce29a")]
+[assembly: Guid("0974037a-f1f1-4dae-b3a9-47e13ebd1e3a")]
 
 // Сведения о версии сборки состоят из следующих четырех значений:
 //
