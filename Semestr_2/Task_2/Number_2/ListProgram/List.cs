@@ -10,8 +10,9 @@ namespace ListProgram
 			public Node Next { get; set; }
 			public Node Prev { get; set; }
 		}
-		private Node head = null;
-		private Node tail = null;
+
+		private Node head;
+		private Node tail;
 		private int size = 0;
 
 		public int GetSize => size;
@@ -31,7 +32,7 @@ namespace ListProgram
 			}
 			else
 			{
-				Node newNode = new Node()
+				var newNode = new Node()
 				{
 					Value = value,
 					Next = null,
@@ -56,7 +57,7 @@ namespace ListProgram
 			}
 			else
 			{
-				Node newNode = new Node()
+				var newNode = new Node()
 				{
 					Value = value,
 					Next = head,
@@ -97,7 +98,7 @@ namespace ListProgram
 							i++;
 							curr = curr.Next;
 						}
-						Node newNode = new Node()
+						var newNode = new Node()
 						{
 							Value = value,
 							Prev = curr.Prev,

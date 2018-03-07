@@ -7,6 +7,7 @@ namespace ListTests
 	public class ListTest
 	{
 		private List list;
+
 		[TestInitialize]
 		public void Initialize()
 		{
