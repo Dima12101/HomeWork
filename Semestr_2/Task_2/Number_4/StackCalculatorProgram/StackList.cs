@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StackCalculatorProgram
 {
-	public class Stack_list<T> : IStack<T>
+	public class StackList<T> : IStack<T>
 	{
 		private Node head;
 		private int size = 0;
@@ -19,7 +19,7 @@ namespace StackCalculatorProgram
 
 		public void Push(T element)
 		{
-			if(IsEmpty())
+			if (IsEmpty())
 			{
 				head = new Node()
 				{
@@ -42,7 +42,7 @@ namespace StackCalculatorProgram
 
 		public T Pop()
 		{
-			if(IsEmpty())
+			if (IsEmpty())
 			{
 				throw new Exception("Error.Stack is empty!");
 			}

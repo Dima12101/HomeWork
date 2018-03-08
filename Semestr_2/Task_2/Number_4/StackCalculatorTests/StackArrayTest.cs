@@ -5,14 +5,14 @@ using StackCalculatorProgram;
 namespace StackCalculatorTests
 {
 	[TestClass]
-	public class Stack_arrayTest
+	public class StackArrayTest
 	{
 		IStack<int> stack;
 
 		[TestInitialize]
 		public void Initialize()
 		{
-			stack = new Stack_array<int>();
+			stack = new StackArray<int>();
 		}
 
 		[TestMethod]

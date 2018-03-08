@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StackCalculatorProgram
 {
-	public class Stack_array<T> : IStack<T>
+	public class StackArray<T> : IStack<T>
 	{
 		private T[] arr = null;
 		private int size = 0;
@@ -40,7 +40,7 @@ namespace StackCalculatorProgram
 
 		public void Push(T element)
 		{
-			if(IsEmpty())
+			if (IsEmpty())
 			{
 				arr = new T[1];
 				arr[0] = element;

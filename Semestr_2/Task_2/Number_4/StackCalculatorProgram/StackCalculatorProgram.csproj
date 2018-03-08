@@ -46,8 +46,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IStack.cs" />
-    <Compile Include="Stack_array.cs" />
-    <Compile Include="Stack_list.cs" />
+    <Compile Include="StackArray.cs" />
+    <Compile Include="StackList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

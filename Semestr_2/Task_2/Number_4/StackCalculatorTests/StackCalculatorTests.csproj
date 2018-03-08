@@ -49,8 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="StackCalculatorTest.cs" />
-    <Compile Include="Stack_arrayTest.cs" />
-    <Compile Include="Stack_listTest.cs" />
+    <Compile Include="StackArrayTest.cs" />
+    <Compile Include="StackListTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

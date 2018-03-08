@@ -87,28 +87,28 @@ namespace StackCalculatorTests
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void TestNotCorrectBrackets_One()
+		public void TestNotCorrectBrackets1()
 		{
 			int result = cal.Result(") 5 + 5 )");
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void TestNotCorrectBrackets_Two()
+		public void TestNotCorrectBrackets2()
 		{
 			int result = cal.Result(" 5 + 5 )");
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void TestNotCorrectBrackets_Three()
+		public void TestNotCorrectBrackets3()
 		{
 			int result = cal.Result("( 5 + 5");
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void TestNotCorrectBrackets_Four()
+		public void TestNotCorrectBrackets4()
 		{
 			int result = cal.Result("2 2 ( 5 + 5");
 		}

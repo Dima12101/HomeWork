@@ -8,8 +8,8 @@ namespace StackCalculatorProgram
 {
 	public class Calculator
 	{
-		private IStack<char> stackSymbols = new Stack_list<char>();
-		private IStack<int> stackDigits = new Stack_list<int>();
+		private IStack<char> stackSymbols = new StackList<char>();
+		private IStack<int> stackDigits = new StackList<int>();
 
 		private void Calculate(char symbol)
 		{
@@ -93,7 +93,7 @@ namespace StackCalculatorProgram
 			string dig = "";
 			for (int i = 0; i < ArExp.Length; i++)
 			{
-				if(ArExp[i] >= '0' && ArExp[i] <= '9')
+				if (ArExp[i] >= '0' && ArExp[i] <= '9')
 				{
 					dig += ArExp[i];
 				}
