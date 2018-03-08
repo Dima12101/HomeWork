@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ListProgram;
+
 namespace ListTests
 {
 	[TestClass]
@@ -15,116 +16,116 @@ namespace ListTests
 		}
 
 		[TestMethod]
-		public void Test_AddElement_End()
+		public void TestAddElementEnd()
 		{
-			list.AddElement_End(1);
-			Assert.AreEqual(1, list.GetElement_End());
+			list.AddElementEnd(1);
+			Assert.AreEqual(1, list.GetElementEnd());
 		}
 
 		[TestMethod]
-		public void Test_AddElement_Begin()
+		public void TestAddElementBegin()
 		{
-			list.AddElement_Begin(1);
-			Assert.AreEqual(1, list.GetElement_Begin());
+			list.AddElementBegin(1);
+			Assert.AreEqual(1, list.GetElementBegin());
 		}
 
 		[TestMethod]
-		public void Test_AddTwoElement_Begin()
+		public void TestAddTwoElementBegin()
 		{
-			list.AddElement_Begin(1);
-			list.AddElement_Begin(2);
-			Assert.AreEqual(2, list.GetElementValue_Index(0));
-			Assert.AreEqual(1, list.GetElementValue_Index(1));
+			list.AddElementBegin(1);
+			list.AddElementBegin(2);
+			Assert.AreEqual(2, list.GetElementValueIndex(0));
+			Assert.AreEqual(1, list.GetElementValueIndex(1));
 		}
 
 		[TestMethod]
-		public void Test_AddTwoElement_End()
+		public void TestAddTwoElementEnd()
 		{
-			list.AddElement_End(1);
-			list.AddElement_End(2);
-			Assert.AreEqual(1, list.GetElementValue_Index(0));
-			Assert.AreEqual(2, list.GetElementValue_Index(1));
+			list.AddElementEnd(1);
+			list.AddElementEnd(2);
+			Assert.AreEqual(1, list.GetElementValueIndex(0));
+			Assert.AreEqual(2, list.GetElementValueIndex(1));
 		}
 
 		[TestMethod]
-		public void Test_AddElement_Index()
+		public void TestAddElementIndex()
 		{
-			list.AddElement_End(1);
-			list.AddElement_End(3);
-			list.AddElement_Index(2, 1);
-			Assert.AreEqual(2, list.GetElementValue_Index(1));
+			list.AddElementEnd(1);
+			list.AddElementEnd(3);
+			list.AddElementIndex(2, 1);
+			Assert.AreEqual(2, list.GetElementValueIndex(1));
 		}
 
 		[TestMethod]
-		public void Test_DeleteElement_End()
+		public void TestDeleteElementEnd()
 		{
-			list.AddElement_End(1);
-			list.DeleteElement_End();
+			list.AddElementEnd(1);
+			list.DeleteElementEnd();
 			Assert.IsTrue(list.IsEmpty);
 		}
 
 		[TestMethod]
-		public void Test_DeleteElement_Begin()
+		public void TestDeleteElementBegin()
 		{
-			list.AddElement_Begin(1);
-			list.DeleteElement_Begin();
+			list.AddElementBegin(1);
+			list.DeleteElementBegin();
 			Assert.IsTrue(list.IsEmpty);
 		}
 
 		[TestMethod]
-		public void Test_DeleteElement_Index()
+		public void TestDeleteElementIndex()
 		{
-			list.AddElement_End(1);
-			list.AddElement_End(2);
-			list.AddElement_End(3);
-			list.DeleteElement_Index(1);
-			Assert.AreEqual(1, list.GetElementValue_Index(0));
-			Assert.AreEqual(3, list.GetElementValue_Index(1));
+			list.AddElementEnd(1);
+			list.AddElementEnd(2);
+			list.AddElementEnd(3);
+			list.DeleteElementIndex(1);
+			Assert.AreEqual(1, list.GetElementValueIndex(0));
+			Assert.AreEqual(3, list.GetElementValueIndex(1));
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void Test_DeleteElement_ListIsEmpty()
+		public void TestDeleteElementListIsEmpty()
 		{
-			list.DeleteElement_Begin();
-			list.DeleteElement_End();
-			list.DeleteElement_Index(0);
+			list.DeleteElementBegin();
+			list.DeleteElementEnd();
+			list.DeleteElementIndex(0);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void Test_NotCorrectIndex_Add()
+		public void TestAddForNotCorrectIndex()
 		{
-			list.AddElement_End(1);
-			list.AddElement_End(2);
-			list.AddElement_End(3);
+			list.AddElementEnd(1);
+			list.AddElementEnd(2);
+			list.AddElementEnd(3);
 
-			list.AddElement_Index(4, -1);
-			list.AddElement_Index(4, list.GetSize);
+			list.AddElementIndex(4, -1);
+			list.AddElementIndex(4, list.GetSize);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void Test_NotCorrectIndex_Delete()
+		public void TestDeleteForNotCorrectIndex()
 		{
-			list.AddElement_End(1);
-			list.AddElement_End(2);
-			list.AddElement_End(3);
+			list.AddElementEnd(1);
+			list.AddElementEnd(2);
+			list.AddElementEnd(3);
 			
-			list.DeleteElement_Index(-1);
-			list.DeleteElement_Index(list.GetSize);
+			list.DeleteElementIndex(-1);
+			list.DeleteElementIndex(list.GetSize);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void Test_NotCorrectIndex_Get()
+		public void TestGetForNotCorrectIndex()
 		{
-			list.AddElement_End(1);
-			list.AddElement_End(2);
-			list.AddElement_End(3);
+			list.AddElementEnd(1);
+			list.AddElementEnd(2);
+			list.AddElementEnd(3);
 
-			list.GetElementValue_Index(-1);
-			list.GetElementValue_Index(list.GetSize);
+			list.GetElementValueIndex(-1);
+			list.GetElementValueIndex(list.GetSize);
 		}
 	}
 }

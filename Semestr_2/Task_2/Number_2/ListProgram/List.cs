@@ -19,9 +19,9 @@ namespace ListProgram
 
 		public bool IsEmpty => size == 0;
 
-		public void AddElement_End(int value)
+		public void AddElementEnd(int value)
 		{
-			if(IsEmpty)
+			if (IsEmpty)
 			{
 				head = tail = new Node()
 				{
@@ -44,7 +44,7 @@ namespace ListProgram
 			size++;
 		}
 
-		public void AddElement_Begin(int value)
+		public void AddElementBegin(int value)
 		{
 			if (IsEmpty)
 			{
@@ -69,7 +69,7 @@ namespace ListProgram
 			size++;
 		}
 
-		public void AddElement_Index(int value, int index)
+		public void AddElementIndex(int value, int index)
 		{
 			if (IsEmpty)
 			{
@@ -110,14 +110,13 @@ namespace ListProgram
 					}
 					else
 					{
-						AddElement_Begin(value);
+						AddElementBegin(value);
 					}
 				}
-				
 			}	
 		}
 
-		public void DeleteElement_End()
+		public void DeleteElementEnd()
 		{
 			if (IsEmpty)
 			{
@@ -134,7 +133,7 @@ namespace ListProgram
 			}
 		}
 
-		public void DeleteElement_Begin()
+		public void DeleteElementBegin()
 		{
 			if (IsEmpty)
 			{
@@ -143,7 +142,7 @@ namespace ListProgram
 			else
 			{
 				head = head.Next;
-				if(size != 1)
+				if (size != 1)
 				{
 					head.Prev = null;
 				}
@@ -151,7 +150,7 @@ namespace ListProgram
 			}
 		}
 
-		public void DeleteElement_Index(int index)
+		public void DeleteElementIndex(int index)
 		{
 			if (IsEmpty)
 			{
@@ -184,22 +183,22 @@ namespace ListProgram
 					{
 						if (index == 0)
 						{
-							DeleteElement_Begin();
+							DeleteElementBegin();
 						}
-						else if(index == size - 1)
+						else if (index == size - 1)
 						{
-							DeleteElement_End();
+							DeleteElementEnd();
 						}
 					}
 				}	
 			}
 		}
 
-		public int GetElement_End() => tail.Value;
+		public int GetElementEnd() => tail.Value;
 
-		public int GetElement_Begin() => head.Value;
+		public int GetElementBegin() => head.Value;
 
-		public int GetElementValue_Index(int index)
+		public int GetElementValueIndex(int index)
 		{
 			if (IsEmpty)
 			{
