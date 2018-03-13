@@ -1,57 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StackCalculatorProgram
 {
 	public class StackArray<T> : IStack<T>
 	{
-		private T[] arr = null;
+		private T[] arr;
 		private int size = 0;
+		private int capacity = 100;
+
+		public StackArray()
+		{
+			arr = new T[capacity];
+		}
 
 		private void SizeUp()
 		{
-			T[] newArr = new T[size + 1];
-			for (int i = 0; i < size; i++)
+			T[] newArr = new T[capacity * 2];
+			for (int i = 0; i < capacity; i++)
 			{
 				newArr[i] = arr[i];
 			}
+			capacity *= 2;
 			arr = newArr;
-		}
-
-		private void SizeDown()
-		{
-			if (size - 1 == 0)
-			{
-				arr = null;
-			}
-			else
-			{
-				T[] newArr = new T[size - 1];
-				for (int i = 0; i < size - 1; i++)
-				{
-					newArr[i] = arr[i];
-				}
-				arr = newArr;
-			}
 		}
 
 		public void Push(T element)
 		{
-			if (IsEmpty())
-			{
-				arr = new T[1];
-				arr[0] = element;
-				size++;
-			}
-			else
+			if (size == capacity)
 			{
 				SizeUp();
-				arr[size] = element;
-				size++;
 			}
+			arr[size] = element;
+			size++;
 		}
 
 		public T Pop()
@@ -62,10 +42,8 @@ namespace StackCalculatorProgram
 			}
 			else
 			{
-				T temp = arr[size - 1];
-				SizeDown();
 				size--;
-				return temp;
+				return arr[size];
 			}
 		}
 

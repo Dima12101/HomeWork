@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StackCalculatorProgram
 {
 	public class Calculator
 	{
-		private IStack<char> stackSymbols = new StackList<char>();
-		private IStack<int> stackDigits = new StackList<int>();
+		private IStack<int> stackDigits;
+		private IStack<char> stackSymbols;
+
+		public Calculator(IStack<int> stackDigits, IStack<char> stackSymbols)
+		{
+			this.stackDigits = stackDigits;
+			this.stackSymbols = stackSymbols;
+		}
 
 		private void Calculate(char symbol)
 		{
@@ -19,7 +21,7 @@ namespace StackCalculatorProgram
 			}
 			int digit2 = stackDigits.Pop();
 			int digit1 = stackDigits.Pop();
-			switch(symbol)
+			switch (symbol)
 			{
 				case '+':
 					stackDigits.Push(digit1 + digit2);
@@ -38,7 +40,7 @@ namespace StackCalculatorProgram
 			}
 		}
 
-		private  void CheckPriority()
+		private void CheckPriority()
 		{
 			if (!stackSymbols.IsEmpty())
 			{
@@ -46,7 +48,7 @@ namespace StackCalculatorProgram
 				do
 				{
 					char symbol = stackSymbols.Pop();
-					switch(symbol)
+					switch (symbol)
 					{
 						case '*':
 							Calculate(symbol);
@@ -77,7 +79,7 @@ namespace StackCalculatorProgram
 			while (symbol != '(')
 			{
 				Calculate(symbol);
-				if(!stackSymbols.IsEmpty())
+				if (!stackSymbols.IsEmpty())
 				{
 					symbol = stackSymbols.Pop();
 				}
@@ -88,14 +90,14 @@ namespace StackCalculatorProgram
 			}
 		}
 
-		public int Result(string ArExp)
+		public int Result(string arExp)
 		{
 			string dig = "";
-			for (int i = 0; i < ArExp.Length; i++)
+			for (int i = 0; i < arExp.Length; i++)
 			{
-				if (ArExp[i] >= '0' && ArExp[i] <= '9')
+				if (arExp[i] >= '0' && arExp[i] <= '9')
 				{
-					dig += ArExp[i];
+					dig += arExp[i];
 				}
 				else
 				{
@@ -104,7 +106,7 @@ namespace StackCalculatorProgram
 						stackDigits.Push(Int32.Parse(dig));
 						dig = "";
 					}
-					switch (ArExp[i])
+					switch (arExp[i])
 					{
 						case '(':
 							stackSymbols.Push('(');
@@ -137,7 +139,7 @@ namespace StackCalculatorProgram
 			{
 				stackDigits.Push(Int32.Parse(dig));
 			}
-			if(!stackSymbols.IsEmpty())
+			if (!stackSymbols.IsEmpty())
 			{
 				do
 				{

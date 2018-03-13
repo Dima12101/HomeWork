@@ -8,12 +8,12 @@ namespace StackCalculatorTests
 	[TestClass]
 	public class StackCalculatorTest
 	{
-		Calculator cal;
+		private Calculator cal;
 
 		[TestInitialize]
 		public void Initialize()
 		{
-			cal = new Calculator();
+			cal = new Calculator(new StackArray<int>(), new StackList<char>());
 		}
 
 		[TestMethod]
@@ -68,7 +68,7 @@ namespace StackCalculatorTests
 		[ExpectedException(typeof(Exception))]
 		public void TestArithmeticExpressionIsEmpty()
 		{
-			int result = cal.Result("");
+			cal.Result("");
 		}
 
 		[TestMethod]

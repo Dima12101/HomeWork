@@ -7,7 +7,7 @@ namespace StackCalculatorTests
 	[TestClass]
 	public class StackListTest
 	{
-		IStack<int> stack;
+		private IStack<int> stack;
 
 		[TestInitialize]
 		public void Initialize()
