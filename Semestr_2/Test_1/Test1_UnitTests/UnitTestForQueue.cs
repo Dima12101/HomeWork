@@ -5,9 +5,9 @@ using Test_1;
 namespace Test1_UnitTests
 {
 	[TestClass]
-	public class UnitTest1
+	public class UnitTestForQueue
 	{
-		public Queue<int> queue;
+		private Queue<int> queue;
 
 		[TestInitialize]
 		public void Initialize()
@@ -54,7 +54,7 @@ namespace Test1_UnitTests
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(Exception))]
+		[ExpectedException(typeof(EmptyContainerException))]
 		public void TestDequeueException()
 		{
 			queue.Dequeue();

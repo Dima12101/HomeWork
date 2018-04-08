@@ -10,17 +10,16 @@ namespace Test_1
 			public Tvalue value;
 			public int priority;
 			public Node next;
-			public Node prev;
 		}
 
 		private Node head;
 		private Node tail;
 
-		public bool isEmpty => (head == null || tail == null);
+		public bool IsEmpty => (head == null || tail == null);
 
 		public void Enqueue(Tvalue _value, int _priority)
 		{
-			if (isEmpty)
+			if (IsEmpty)
 			{
 				head = tail = new Node
 				{
@@ -30,33 +29,38 @@ namespace Test_1
 			}
 			else
 			{
-				Node temp = tail;
-				while (temp != null && _priority > temp.priority)
+				Node temp = head;
+				bool insertInCenter = false;
+				while (temp != null && _priority < temp.priority)
 				{
-					temp = temp.prev;
+					if (temp.next != null)
+					{
+						if (temp.next.priority < _priority)
+						{
+							insertInCenter = true;
+							break;
+						}
+					}
+					temp = temp.next;
 				}
 				Node newNode = new Node
 				{
 					value = _value,
 					priority = _priority,
 				};
-				if (temp == null)
+				if (temp == head && !insertInCenter)
 				{
 					newNode.next = head;
-					head.prev = newNode;
 					head = newNode;
 				}
-				else if (temp == tail)
+				else if (temp == null)
 				{
-					newNode.prev = tail;
 					tail.next = newNode;
 					tail = newNode;
 				}
 				else
 				{
-					newNode.prev = temp;
 					newNode.next = temp.next;
-					temp.next.prev = newNode;
 					temp.next = newNode;
 				}
 			}
@@ -64,19 +68,15 @@ namespace Test_1
 
 		public Tvalue Dequeue()
 		{
-			if (isEmpty)
+			if (IsEmpty)
 			{
-				throw new Exception("Queue is empty!");
+				throw new EmptyContainerException("Queue is empty!");
 			}
 			Node temp = head;
 			head = temp.next;
 			if (head == null)
 			{
 				tail = null;
-			}
-			else
-			{
-				head.prev = null;
 			}
 			temp.next = null;
 			return temp.value;

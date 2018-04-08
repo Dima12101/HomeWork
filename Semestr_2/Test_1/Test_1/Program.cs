@@ -7,7 +7,7 @@ namespace Test_1
 	{
 		static void Main(string[] args)
 		{
-			Queue<int> queue = new Queue<int>();
+			var queue = new Queue<int>();
 			queue.Enqueue(1, 1);
 			queue.Enqueue(5, 5);
 			queue.Enqueue(4, 4);
