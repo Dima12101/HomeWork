@@ -1,0 +1,32 @@
+﻿@page
+@model ConferenceApp.Pages.RegisterModel
+<html>
+<body>
+    <form asp-action="Register" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <p>
+            <label asp-for="Participant.Name">Your name:</label>
+            <input asp-for="Participant.Name" />
+            <span asp-validation-for="Participant.Name" class="text-danger" />
+        </p>
+        <p>
+            <label asp-for="Participant.Email">Your email:</label>
+            <input asp-for="Participant.Email" />
+            <span asp-validation-for="Participant.Email" class="text-danger" />
+        </p>
+        <p>
+            <label>Are you a speaker?</label>
+            <select asp-for="Participant.Speaker">
+                <option value="">Choose an option</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+            <span asp-validation-for="Participant.Speaker" class="text-danger" />
+        </p>
+        <button type="submit">Register!</button>
+    </form>
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    }
+</body>
+</html>
