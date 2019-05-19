@@ -15,11 +15,28 @@ namespace СomputationMath
 			data = new double[length];
 		}
 
+		public Vector(double[] _data)
+		{
+			data = new double[_data.Length];
+			for (int i = 0; i < data.Length; i++)
+			{
+				data[i] = _data[i];
+			}
+		}
+
 		public void Show()
 		{
 			for (int i = 0; i < data.Length; i++)
 			{
 				Console.Write(data[i].ToString("0.000000") + ' ');
+			}
+			Console.Write('\n');
+		}
+		public void Show1()
+		{
+			for (int i = 0; i < data.Length; i++)
+			{
+				Console.Write(data[i].ToString("0.000000") + '\n');
 			}
 			Console.Write('\n');
 		}
@@ -103,7 +120,7 @@ namespace СomputationMath
 			return maxElement;
 		}
 
-		public void SetValueByFunks(ScalarFunk_N[] vectorFunks, double[] X)
+		public void SetValueByFunks(ScalarFunk1_N[] vectorFunks, double[] X)
 		{
 			for (int i = 0; i < data.Length; i++)
 			{

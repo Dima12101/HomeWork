@@ -163,7 +163,7 @@ namespace СomputationMath
 			}
 		}
 
-		public void SetValueByFunks(ScalarFunk_N[][] matrixFunks, double[] X)
+		public void SetValueByFunks(ScalarFunk1_N[][] matrixFunks, double[] X)
 		{
 			for (int i = 0; i < N; i++)
 			{

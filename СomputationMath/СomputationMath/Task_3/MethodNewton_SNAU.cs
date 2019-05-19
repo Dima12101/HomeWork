@@ -11,7 +11,7 @@ namespace СomputationMath.Task_2
 	static class MethodNewton_SNAU
 	{
 		#region СНАУ с итерациями через обратную матрицу
-		static public Vector Modified_withReverse(ScalarFunk_N[][] matrixFunks, ScalarFunk_N[] vectorFunks, double Eps = 10e-5)
+		static public Vector Modified_withReverse(ScalarFunk1_N[][] matrixFunks, ScalarFunk1_N[] vectorFunks, double Eps = 10e-5)
 		{
 			Console.Write("Begin vector: ");
 			var vectorX_next = new Vector(vectorFunks.Length);
@@ -51,7 +51,7 @@ namespace СomputationMath.Task_2
 			return vectorX_next;
 		}
 
-		static public Vector Defualt_withReverse(ScalarFunk_N[][] matrixFunks, ScalarFunk_N[] vectorFunks, double Eps = 10e-5)
+		static public Vector Defualt_withReverse(ScalarFunk1_N[][] matrixFunks, ScalarFunk1_N[] vectorFunks, double Eps = 10e-5)
 		{
 			Console.Write("Begin vector: ");
 			var vectorX_next = new Vector(vectorFunks.Length);
@@ -88,7 +88,7 @@ namespace СomputationMath.Task_2
 		}
 		#endregion
 
-		static public Pair<Vector, int> Defualt_withSLAU(Vector vectorStart, ScalarFunk_N[][] matrixFunks, ScalarFunk_N[] vectorFunks,
+		static public Pair<Vector, int> Defualt_withSLAU(Vector vectorStart, ScalarFunk1_N[][] matrixFunks, ScalarFunk1_N[] vectorFunks,
 			Stopwatch stopWatch, int iterExit = Int32.MaxValue, double EpsSwitch = 10e-6, double Eps = 10e-6)
 		{
 			//Итерации вида: J * deltaX = -F; Матрица J пересчитывается на каждой итерации
@@ -144,7 +144,7 @@ namespace СomputationMath.Task_2
 			return new Pair<Vector, int> { FirstElement = vectorX_next, SecondElement = countIter };
 		}
 
-		static public Pair<Vector, int> Modified_withSLAU(Vector vectorStart, ScalarFunk_N[][] matrixFunks, ScalarFunk_N[] vectorFunks,
+		static public Pair<Vector, int> Modified_withSLAU(Vector vectorStart, ScalarFunk1_N[][] matrixFunks, ScalarFunk1_N[] vectorFunks,
 		Stopwatch stopWatch, int iterExit = Int32.MaxValue, double EpsSwitch = 10e-6, double Eps = 10e-6)
 		{
 			//Итерации вида: J * deltaX = -F; Матрица J инициализируется единожды
@@ -198,7 +198,7 @@ namespace СomputationMath.Task_2
 			return new Pair<Vector, int> { FirstElement = vectorX_next, SecondElement = countIter };
 		}
 
-		static public Pair<Vector, int> Hybrid_withSLAU(Vector vectorStart, ScalarFunk_N[][] matrixFunks, ScalarFunk_N[] vectorFunks, int iterRecount,
+		static public Pair<Vector, int> Hybrid_withSLAU(Vector vectorStart, ScalarFunk1_N[][] matrixFunks, ScalarFunk1_N[] vectorFunks, int iterRecount,
 			Stopwatch stopWatch, int iterExit = Int32.MaxValue, double EpsSwitch = 10e-6, double Eps = 10e-6)
 		{
 			//Итерации вида: J * deltaX = -F; Матрица J пересчитывается через каждые iterRecount итераций
@@ -257,7 +257,7 @@ namespace СomputationMath.Task_2
 			return new Pair<Vector, int> { FirstElement = vectorX_next, SecondElement = countIter };
 		}
 
-		static public Pair<Vector, int> MergeMethods(Vector vectorStart, ScalarFunk_N[][] matrixFunks, ScalarFunk_N[] vectorFunks,
+		static public Pair<Vector, int> MergeMethods(Vector vectorStart, ScalarFunk1_N[][] matrixFunks, ScalarFunk1_N[] vectorFunks,
 			Stopwatch stopWatch, int iterSwitch)
 		{
 			int degreeEps = 6;

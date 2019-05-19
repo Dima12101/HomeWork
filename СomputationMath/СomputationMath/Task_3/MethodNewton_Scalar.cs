@@ -8,7 +8,7 @@ namespace СomputationMath.Task_2
 {
 	static class MethodNewton_Scalar
 	{
-		static private Pair<double[], double[]> Localization(double a, double b, ScalarFunk funk, double countArea = 10)
+		static private Pair<double[], double[]> Localization(double a, double b, ScalarFunk1 funk, double countArea = 10)
 		{
 			var leftBorders = new List<double>();
 			var rightBorders = new List<double>();
@@ -35,7 +35,7 @@ namespace СomputationMath.Task_2
 
 		//Модифицированный
 		static public Pair<double[], int[]> DifferenceMethod(double a, double b,
-			ScalarFunk funk, double Eps = 10e-4)
+			ScalarFunk1 funk, double Eps = 10e-4)
 		{
 			double countArea = 10;
 			var localization = Localization(a, b, funk, countArea);
@@ -66,7 +66,7 @@ namespace СomputationMath.Task_2
 		}
 
 		static public Pair<double[], int[]> SimplifiedMethod(double a, double b,
-			ScalarFunk funk, ScalarFunk funkDerivative, double Eps = 10e-4)
+			ScalarFunk1 funk, ScalarFunk1 funkDerivative, double Eps = 10e-4)
 		{
 			double countArea = 10;
 			var localization = Localization(a, b, funk, countArea);
@@ -96,7 +96,7 @@ namespace СomputationMath.Task_2
 
 		//Стандартный
 		static public Pair<double[], int[]> DefualtMethod(double a, double b,
-			ScalarFunk funk, ScalarFunk funkDerivative, double Eps = 10e-4)
+			ScalarFunk1 funk, ScalarFunk1 funkDerivative, double Eps = 10e-4)
 		{
 			double countArea = 10;
 			var localization = Localization(a, b, funk, countArea);

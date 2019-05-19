@@ -10,7 +10,7 @@ namespace СomputationMath.Task_4
 {
 	static class IntegralCalculation
 	{
-		static public double MiddleRectangleRule (ScalarFunk F,double a, double b, int n)
+		static public double MiddleRectangleRule (ScalarFunk1 F,double a, double b, int n)
 		{
 			double result = 0.0;
 
@@ -41,7 +41,7 @@ namespace СomputationMath.Task_4
 		}
 
 
-		static public double IKF_NewtonCots(ScalarFunk f, double defA, double a, double b, double alpha, int n)
+		static public double IKF_NewtonCots(ScalarFunk1 f, double defA, double a, double b, double alpha, int n)
 		{
 			//Получаем вектор узлов
 			Vector vectorX = new Vector(n);
@@ -89,7 +89,7 @@ namespace СomputationMath.Task_4
 			}
 		}
 
-		static public double KF_Gauss(ScalarFunk f, double defA, double a, double b, double alpha, int n)
+		static public double KF_Gauss(ScalarFunk1 f, double defA, double a, double b, double alpha, int n)
 		{
 			//Вычисляем моменты от 0 до 2n - 1
 			Vector vectorMoments = new Vector(2 * n);
@@ -114,7 +114,7 @@ namespace СomputationMath.Task_4
 
 			//Находим узлы из W(x)
 			Vector vectorX = new Vector(n);
-			ScalarFunk funkW = (double X) =>
+			ScalarFunk1 funkW = (double X) =>
 			{
 				double resultFunc = 0.0;
 				for (int i = 0; i <= n; i++)
@@ -123,7 +123,7 @@ namespace СomputationMath.Task_4
 				}
 				return resultFunc;
 			};
-			ScalarFunk funkW_Derivative = (double X) =>
+			ScalarFunk1 funkW_Derivative = (double X) =>
 			{
 				double resultFuncDerivative = 0.0;
 				for (int i = 0; i <= n; i++)
@@ -160,7 +160,7 @@ namespace СomputationMath.Task_4
 		}
 
 		public enum TypeKF { NewtonCots , Gauss }
-		static public double SKF(TypeKF typeKF, ScalarFunk f, double defA, double a, double b, double alpha, int n, double h)
+		static public double SKF(TypeKF typeKF, ScalarFunk1 f, double defA, double a, double b, double alpha, int n, double h)
 		{
 			int k = (Int32)((b - a) / h);
 			double result = 0.0;
@@ -180,7 +180,7 @@ namespace СomputationMath.Task_4
 			return result;
 		}
 
-		static public double AnalysisMethod(TypeKF typeKF, ScalarFunk f, double defA, double a, double b, double alpha, int n, double Eps)
+		static public double AnalysisMethod(TypeKF typeKF, ScalarFunk1 f, double defA, double a, double b, double alpha, int n, double Eps)
 		{
 			double L = 2;
 			Vector vectorH = new Vector(3);

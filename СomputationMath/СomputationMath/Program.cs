@@ -6,6 +6,7 @@ using System.Threading;
 using СomputationMath.Task_1;
 using СomputationMath.Task_2;
 using СomputationMath.Task_4;
+using СomputationMath.Task_5;
 
 namespace СomputationMath
 {
@@ -193,7 +194,7 @@ namespace СomputationMath
 		#endregion
 
 		#region Задание 3
-		static void InitVectorFunks(ScalarFunk_N[] vectorFunks)
+		static void InitVectorFunks(ScalarFunk1_N[] vectorFunks)
 		{
 			vectorFunks[0] = (double[] X) => Math.Cos(X[0] * X[1]) - Math.Exp(-3 * X[2]) + X[3] * Math.Pow(X[4], 2) - X[5] - Math.Sinh(2 * X[7]) * X[8] + 2 * X[9] + 2.0004339741653854440;
 			vectorFunks[1] = (double[] X) => Math.Sin(X[0] * X[1]) + X[2] * X[8] * X[6] - Math.Exp(-X[9] + X[5]) + 3 * Math.Pow(X[4], 2) - X[5] * (X[7] + 1) + 10.886272036407019994;
@@ -207,10 +208,10 @@ namespace СomputationMath
 			vectorFunks[9] = (double[] X) => X[9] * X[0] + X[8] * X[1] - X[7] * X[2] + Math.Sin(X[3] + X[4] + X[5]) * X[6] - 0.78238095238095238096;
 		}
 
-		static void InitMatrixFunks(ScalarFunk_N[][] matrixFunks)
+		static void InitMatrixFunks(ScalarFunk1_N[][] matrixFunks)
 		{
-			matrixFunks[0] = new ScalarFunk_N[10];
-			matrixFunks[0][0] = (double[] X) => -Math.Sin(X[0] * X[1]) * X[1]; 
+			matrixFunks[0] = new ScalarFunk1_N[10];
+			matrixFunks[0][0] = (double[] X) => -Math.Sin(X[0] * X[1]) * X[1];
 			matrixFunks[0][1] = (double[] X) => -Math.Sin(X[0] * X[1]) * X[0];
 			matrixFunks[0][2] = (double[] X) => 3.0 * Math.Exp(-(3 * X[2]));
 			matrixFunks[0][3] = (double[] X) => X[4] * X[4];
@@ -220,7 +221,7 @@ namespace СomputationMath
 			matrixFunks[0][7] = (double[] X) => -2 * Math.Cosh(2 * X[7]) * X[8];
 			matrixFunks[0][8] = (double[] X) => -Math.Sinh(2 * X[7]);
 			matrixFunks[0][9] = (double[] X) => 2;
-			matrixFunks[1] = new ScalarFunk_N[10];
+			matrixFunks[1] = new ScalarFunk1_N[10];
 			matrixFunks[1][0] = (double[] X) => Math.Cos(X[0] * X[1]) * X[1];
 			matrixFunks[1][1] = (double[] X) => Math.Cos(X[0] * X[1]) * X[0];
 			matrixFunks[1][2] = (double[] X) => X[8] * X[6];
@@ -231,7 +232,7 @@ namespace СomputationMath
 			matrixFunks[1][7] = (double[] X) => -X[5];
 			matrixFunks[1][8] = (double[] X) => X[2] * X[6];
 			matrixFunks[1][9] = (double[] X) => Math.Exp(-X[9] + X[5]);
-			matrixFunks[2] = new ScalarFunk_N[10];
+			matrixFunks[2] = new ScalarFunk1_N[10];
 			matrixFunks[2][0] = (double[] X) => 1;
 			matrixFunks[2][1] = (double[] X) => -1;
 			matrixFunks[2][2] = (double[] X) => 1;
@@ -242,7 +243,7 @@ namespace СomputationMath
 			matrixFunks[2][7] = (double[] X) => -1;
 			matrixFunks[2][8] = (double[] X) => 1;
 			matrixFunks[2][9] = (double[] X) => -1;
-			matrixFunks[3] = new ScalarFunk_N[10];
+			matrixFunks[3] = new ScalarFunk1_N[10];
 			matrixFunks[3][0] = (double[] X) => -X[4] * Math.Pow(X[2] + X[0], -2);
 			matrixFunks[3][1] = (double[] X) => -2 * Math.Cos(X[1] * X[1]) * X[1];//
 			matrixFunks[3][2] = (double[] X) => -X[4] * Math.Pow(X[2] + X[0], -2);
@@ -253,7 +254,7 @@ namespace СomputationMath
 			matrixFunks[3][7] = (double[] X) => -1;
 			matrixFunks[3][8] = (double[] X) => 2 * Math.Sin(-X[8] + X[3]);
 			matrixFunks[3][9] = (double[] X) => -2 * Math.Cos(X[6] * X[9]) * Math.Sin(X[6] * X[9]) * X[6];
-			matrixFunks[4] = new ScalarFunk_N[10];
+			matrixFunks[4] = new ScalarFunk1_N[10];
 			matrixFunks[4][0] = (double[] X) => 2 * X[7];
 			matrixFunks[4][1] = (double[] X) => -2 * Math.Sin(X[1]);
 			matrixFunks[4][2] = (double[] X) => 2 * X[7];
@@ -264,7 +265,7 @@ namespace СomputationMath
 			matrixFunks[4][7] = (double[] X) => (2 * X[2]) + 2 * X[0];
 			matrixFunks[4][8] = (double[] X) => -Math.Pow(-X[8] + X[3], -2);
 			matrixFunks[4][9] = (double[] X) => -X[6] * Math.Exp(-X[6] * (-X[9] + X[5]));
-			matrixFunks[5] = new ScalarFunk_N[10];
+			matrixFunks[5] = new ScalarFunk1_N[10];
 			matrixFunks[5][0] = (double[] X) => Math.Exp(X[0] - X[3] - X[8]);
 			matrixFunks[5][1] = (double[] X) => -3.0 / 2.0 * Math.Sin(3 * X[9] * X[1]) * X[9];
 			matrixFunks[5][2] = (double[] X) => -X[5];
@@ -275,7 +276,7 @@ namespace СomputationMath
 			matrixFunks[5][7] = (double[] X) => -X[4] * X[4] * Math.Pow(X[7], (-2));
 			matrixFunks[5][8] = (double[] X) => -Math.Exp(X[0] - X[3] - X[8]);
 			matrixFunks[5][9] = (double[] X) => -3.0 / 2.0 * Math.Sin(3 * X[9] * X[1]) * X[1];
-			matrixFunks[6] = new ScalarFunk_N[10];
+			matrixFunks[6] = new ScalarFunk1_N[10];
 			matrixFunks[6][0] = (double[] X) => Math.Cos(X[3]);
 			matrixFunks[6][1] = (double[] X) => 3 * X[1] * X[1] * X[6];
 			matrixFunks[6][2] = (double[] X) => 1;
@@ -286,7 +287,7 @@ namespace СomputationMath
 			matrixFunks[6][7] = (double[] X) => -Math.Cos(X[9] / X[4] + X[7]);
 			matrixFunks[6][8] = (double[] X) => 0;
 			matrixFunks[6][9] = (double[] X) => -Math.Cos(X[9] / X[4] + X[7]) / X[4];
-			matrixFunks[7] = new ScalarFunk_N[10];
+			matrixFunks[7] = new ScalarFunk1_N[10];
 			matrixFunks[7][0] = (double[] X) => 2 * X[4] * (X[0] - 2 * X[5]);
 			matrixFunks[7][1] = (double[] X) => -X[6] * Math.Exp(X[1] * X[6] + X[9]);
 			matrixFunks[7][2] = (double[] X) => -2 * Math.Cos(-X[8] + X[2]);
@@ -297,7 +298,7 @@ namespace СomputationMath
 			matrixFunks[7][7] = (double[] X) => 0;
 			matrixFunks[7][8] = (double[] X) => 2 * Math.Cos(-X[8] + X[2]);
 			matrixFunks[7][9] = (double[] X) => -Math.Exp(X[1] * X[6] + X[9]);
-			matrixFunks[8] = new ScalarFunk_N[10];
+			matrixFunks[8] = new ScalarFunk1_N[10];
 			matrixFunks[8][0] = (double[] X) => -3;
 			matrixFunks[8][1] = (double[] X) => -2 * X[7] * X[9] * X[6];
 			matrixFunks[8][2] = (double[] X) => 0;
@@ -308,7 +309,7 @@ namespace СomputationMath
 			matrixFunks[8][7] = (double[] X) => -2 * X[1] * X[9] * X[6];
 			matrixFunks[8][8] = (double[] X) => 3;
 			matrixFunks[8][9] = (double[] X) => -2 * X[1] * X[7] * X[6];
-			matrixFunks[9] = new ScalarFunk_N[10];
+			matrixFunks[9] = new ScalarFunk1_N[10];
 			matrixFunks[9][0] = (double[] X) => X[9];
 			matrixFunks[9][1] = (double[] X) => X[8];
 			matrixFunks[9][2] = (double[] X) => -X[7];
@@ -325,8 +326,8 @@ namespace СomputationMath
 		{
 			#region Решение скалярного уравнения
 			Console.WriteLine("ScalarEquation: x - sin(x) = 0.25");
-			ScalarFunk func1 = (double X) => (X - Math.Sin(X) - 0.25);
-			ScalarFunk funcDer1 = (double X) => (1 - Math.Cos(X));
+			ScalarFunk1 func1 = (double X) => (X - Math.Sin(X) - 0.25);
+			ScalarFunk1 funcDer1 = (double X) => (1 - Math.Cos(X));
 			double a1 = 0.0;
 			double b1 = 17.5;
 			Console.WriteLine("Mode: Difference");
@@ -340,8 +341,8 @@ namespace СomputationMath
 			PrintResult(def_results1);
 
 			Console.WriteLine("\nScalarEquation: x^3 = e^x - 1");
-			ScalarFunk func2 = (double X) => (Math.Pow(X, 3) - Math.Pow(Math.E, X) + 1);
-			ScalarFunk funcDer2 = (double X) => (3 * Math.Pow(X, 2) - Math.Pow(Math.E, X));
+			ScalarFunk1 func2 = (double X) => (Math.Pow(X, 3) - Math.Pow(Math.E, X) + 1);
+			ScalarFunk1 funcDer2 = (double X) => (3 * Math.Pow(X, 2) - Math.Pow(Math.E, X));
 			double a2 = -2.0;
 			double b2 = 2.0;
 			Console.WriteLine("Mode: Difference");
@@ -358,11 +359,11 @@ namespace СomputationMath
 			#region Решение СНАУ
 			Console.WriteLine("\nSNAU________________________________________________");
 			//Задаём вектор функций системы 
-			var vectorFunks = new ScalarFunk_N[10];
+			var vectorFunks = new ScalarFunk1_N[10];
 			InitVectorFunks(vectorFunks);
 
 			//Задём матрицу Якоби системы
-			var matrixFunks = new ScalarFunk_N[10][];
+			var matrixFunks = new ScalarFunk1_N[10][];
 			InitMatrixFunks(matrixFunks);
 
 			//Задаём стартовое приближение
@@ -446,65 +447,138 @@ namespace СomputationMath
 		}
 		#endregion
 
+		#region Задание 4
+		static void Task_4()
+		{
+			//Вариант 13
+			double alpha = 0.2;
+			double a = 1.5;
+			double b = 2.3;
+			double defA = a;
+			ScalarFunk1 f = (double X) => 2 * Math.Cos(3.5 * X) * Math.Exp(5 * X / 3) + 3 * Math.Sin(1.5 * X) * Math.Exp(-4 * X) + 3;
+			ScalarFunk1 p = (double X) => 1 / Math.Pow(X - a, alpha);
+
+			ScalarFunk1 F = (double X) => f(X) * p(X);
+
+			int countNode_MRR = 1000;
+			double result_MRR = IntegralCalculation.MiddleRectangleRule(F, a, b, countNode_MRR);
+			Console.WriteLine($"Result by MiddleRectangleRule (CountNode: {countNode_MRR}): {result_MRR}");
+
+			int countNode_IKF_NC = 3;
+			double result_IKF_NC = IntegralCalculation.IKF_NewtonCots(f, defA, a, b, alpha, countNode_IKF_NC);
+			Console.WriteLine($"Result by IKF_NewtonCots (CountNode: {countNode_IKF_NC}): {result_IKF_NC}");
+
+			int countNode_KF_G = 3;
+			double result_KF_G = IntegralCalculation.KF_Gauss(f, defA, a, b, alpha, countNode_KF_G);
+			Console.WriteLine($"Result by KF_Gauss (CountNode: {countNode_KF_G}): {result_KF_G}");
+
+			int countNode_SKF_NC = 3;
+			int countPart_SKF_NC = 3;
+			double h_SKF_NC = (b - a) / countPart_SKF_NC;
+			double result_SKF_NC = IntegralCalculation.SKF(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_SKF_NC, h_SKF_NC);
+			Console.WriteLine($"Result by SKF IKF_NewtonCots (CountNode: {countNode_SKF_NC}; StepH: {h_SKF_NC};): {result_SKF_NC}");
+
+			//__
+			int L = 2;
+			double result_SKF_NC_check = IntegralCalculation.SKF(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_SKF_NC, h_SKF_NC / L);
+			double Eps_SKF_NC_check = (result_SKF_NC_check - result_SKF_NC) / (1 - Math.Pow(2, -countNode_SKF_NC));
+
+			double Eps_SKF_NC = 10e-15;
+			double h_SKF_NC_opt = h_SKF_NC * Math.Pow(Eps_SKF_NC / Math.Abs(Eps_SKF_NC_check), 1 / countNode_SKF_NC);
+			h_SKF_NC_opt = (b - a) / ((b - a) / h_SKF_NC_opt);
+			double result_SKF_NC_better = IntegralCalculation.SKF(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_SKF_NC, h_SKF_NC_opt);
+			Console.WriteLine($"Result by SKF IKF_NewtonCots (CountNode: {countNode_SKF_NC}; StepH_opt: {h_SKF_NC_opt};; Eps: {Eps_SKF_NC}): {result_SKF_NC_better}");
+			//__
+
+
+
+			int countNode_SKF_G = 3;
+			int countPart_SKF_G = 3;
+			double h_SKF_G = (b - a) / countPart_SKF_G;
+			double result_SKF_G = IntegralCalculation.SKF(IntegralCalculation.TypeKF.Gauss, f, defA, a, b, alpha, countNode_SKF_G, h_SKF_G);
+			Console.WriteLine($"Result by SKF KF_Gauss (CountNode: {countNode_SKF_G}; StepH: {h_SKF_G};): {result_SKF_G}");
+
+
+			int countNode_test = 3;
+			double Eps = 10e-6; ;
+			double result_test = IntegralCalculation.AnalysisMethod(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_test, Eps);
+			Console.WriteLine($"Result by AnalysisMethod : {result_test}");
+		}
+		#endregion
+
 		static void Main(string[] args)
 		{
-			Task_1();
+			double c2 = 0.05;
 
-			//Directory.CreateDirectory("../../../Task_1/NewDir");
+			double x0 = 0;
+			double xN = 5;
 
-			////Вариант 13
-			//double alpha = 0.2;
-			//double a = 1.5;
-			//double b = 2.3;
-			//double defA = a;
-			//ScalarFunk f = (double X) => 2 * Math.Cos(3.5 * X) * Math.Exp(5 * X / 3) + 3 * Math.Sin(1.5 * X) * Math.Exp(-4 * X) + 3;
-			//ScalarFunk p = (double X) => 1 / Math.Pow(X - a, alpha);
+			double A = 3;
+			double B = 3;
+			double C = -3;
 
-			//ScalarFunk F = (double X) => f(X) * p(X);
+			var Y0 = new double[4] { 1, 1, A, 1 };
 
-			//int countNode_MRR = 1000;
-			//double result_MRR = IntegralCalculation.MiddleRectangleRule(F, a, b, countNode_MRR);
-			//Console.WriteLine($"Result by MiddleRectangleRule (CountNode: {countNode_MRR}): {result_MRR}");
+			VectorFunk f = (double X, double[] Y) =>
+			{
+				var resultY = new double[Y.Length];
+				resultY[0] = 2 * X * Math.Pow(Math.Abs(Y[1]), 1 / B) * Math.Sign(Y[1]) * Y[3];
+				resultY[1] = 2 * B * X * Math.Exp((B / C) * (Y[2] - A)) * Y[3];
+				resultY[2] = 2 * C * X * Y[3];
+				resultY[3] = -2 * X * Math.Log(Math.Abs(Y[0]));
 
-			//int countNode_IKF_NC = 3;
-			//double result_IKF_NC = IntegralCalculation.IKF_NewtonCots(f, defA, a, b, alpha, countNode_IKF_NC);
-			//Console.WriteLine($"Result by IKF_NewtonCots (CountNode: {countNode_IKF_NC}): {result_IKF_NC}");
+				return resultY;
+			};
 
-			//int countNode_KF_G = 3;
-			//double result_KF_G = IntegralCalculation.KF_Gauss(f, defA, a, b, alpha, countNode_KF_G);
-			//Console.WriteLine($"Result by KF_Gauss (CountNode: {countNode_KF_G}): {result_KF_G}");
+			var methodC2_rk = OduCalculation.CreateMethod_byC2_P2S2(c2, f);
+			var middlePoint_rk = OduCalculation.GetMethod_MiddlePoint_P2S2(f);
 
-			//int countNode_SKF_NC = 3;
-			//int countPart_SKF_NC = 3;
-			//double h_SKF_NC = (b - a) / countPart_SKF_NC;
-			//double result_SKF_NC = IntegralCalculation.SKF(IntegralCalculation.TypeKF.NewtonCots,f, defA, a, b, alpha, countNode_SKF_NC, h_SKF_NC);
-			//Console.WriteLine($"Result by SKF IKF_NewtonCots (CountNode: {countNode_SKF_NC}; StepH: {h_SKF_NC};): {result_SKF_NC}");
+			//int k = 0;
+			//double h = 1 / Math.Pow(2, 15);
+			//var result_methodC2 = OduCalculation.Result_ConstH(x0, xN, Y0, methodC2_rk, h);
+			//var result_middlePoint = OduCalculation.Result_ConstH(x0, xN, Y0, middlePoint_rk, h);
 
-			////__
-			//int L = 2;
-			//double result_SKF_NC_check = IntegralCalculation.SKF(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_SKF_NC, h_SKF_NC / L);
-			//double Eps_SKF_NC_check = (result_SKF_NC_check - result_SKF_NC) / (1 - Math.Pow(2, -countNode_SKF_NC));
+			int k = 7;
+			var Rs_methodC2 = OduCalculation.GetRs(x0, xN, Y0, methodC2_rk, k, 2);
+			Console.WriteLine("Rs methodC2: "); 
+			Rs_methodC2.Show1();
+			var Rs_MiddlePoint = OduCalculation.GetRs(x0, xN, Y0, middlePoint_rk, k, 2);
+			Console.WriteLine("\nRs middlePoint: ");
+			Rs_MiddlePoint.Show1();
 
-			//double Eps_SKF_NC = 10e-15;
-			//double h_SKF_NC_opt = h_SKF_NC * Math.Pow(Eps_SKF_NC / Math.Abs(Eps_SKF_NC_check), 1 / countNode_SKF_NC);
-			//h_SKF_NC_opt = (b - a) / ((b - a) / h_SKF_NC_opt);
-			//double result_SKF_NC_better = IntegralCalculation.SKF(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_SKF_NC, h_SKF_NC_opt);
-			//Console.WriteLine($"Result by SKF IKF_NewtonCots (CountNode: {countNode_SKF_NC}; StepH_opt: {h_SKF_NC_opt};; Eps: {Eps_SKF_NC}): {result_SKF_NC_better}");
-			////__
-
-
-
-			//int countNode_SKF_G = 3;
-			//int countPart_SKF_G = 3;
-			//double h_SKF_G = (b - a) / countPart_SKF_G;
-			//double result_SKF_G = IntegralCalculation.SKF(IntegralCalculation.TypeKF.Gauss, f, defA, a, b, alpha, countNode_SKF_G, h_SKF_G);
-			//Console.WriteLine($"Result by SKF KF_Gauss (CountNode: {countNode_SKF_G}; StepH: {h_SKF_G};): {result_SKF_G}");
+			var tol = 1e-5;
+			var h_last = 1.0 / Math.Pow(2, k - 1);
+			var v1 = Math.Pow(tol / Rs_methodC2.data[k - 1], 0.5);
+			var h_opt_c2 = h_last * v1;
+			var v2 = Math.Pow(tol / Rs_MiddlePoint.data[k - 1], 0.5);
+			var h_opt_mp = h_last * v2;
 
 
-			//int countNode_test = 3;
-			//double Eps = 10e-6; ;
-			//double result_test = IntegralCalculation.AnalysisMethod(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_test, Eps);
-			//Console.WriteLine($"Result by AnalysisMethod : {result_test}");
+			//Console.Write("\nx: ");
+			//for (int i = 0; i < 4; i++)
+			//{
+			//	Console.Write($" y{i}");
+			//}
+
+			//for (int i = 0; i < 100; i++)
+			//{
+			//	string tempPoint = $"({x0 + i * h}".Replace(',', '.') + ", " + $"{result_methodC2[i].data[0]})".Replace(',', '.');
+			//	Console.Write($"{tempPoint}, ");
+			//}
+
+			//Console.WriteLine("\nResult methodC2:");
+			//for (int i = 0; i < 20; i++)
+			//{
+			//	Console.Write($"\n{x0 + i * h}: ");
+			//	result_methodC2[i].Show();
+			//}
+
+			//Console.WriteLine("Result middlePoint:");
+			//for (int i = 0; i < 20; i++)
+			//{
+			//	Console.Write($"\ny{i}: ");
+			//	result_middlePoint[i].Show();
+			//}
 		}
 	}
 }
