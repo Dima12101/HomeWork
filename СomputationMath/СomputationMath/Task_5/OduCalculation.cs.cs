@@ -16,26 +16,21 @@ namespace СomputationMath.Task_5
 			int s = B.Length; //шаги
 			return (double X0, double[] Y0, double h) =>
 			{
-				var beginVector = new Vector(Y0.Length);
-				beginVector.SetValues(Y0);
-
-				var result = new Vector(Y0.Length);
+				var beginVector = new Vector(Y0);
 
 				var K = new Vector[s];
-				K[0] = new Vector(Y0.Length);
-				K[0].SetValues(f(X0, Y0));
+				K[0] = new Vector(f(X0, Y0));
 
-				result.Copy(K[0]);
+				var result = B[0] * new Vector(K[0].data);
 				for (int i = 1; i < s; i++)
 				{
 					var tempX = X0 + C[i] * h;
-					var tempY = beginVector;
+					var tempY = new Vector(beginVector.data);
 					for (int j = 0; j < i; j++)
 					{
-						tempY += A[i][j] * K[j];
+						tempY += h * A[i][j] * K[j];
 					}
-					K[i] = new Vector(Y0.Length);
-					K[i].SetValues(f(tempX, tempY.data));
+					K[i] = new Vector(f(tempX, tempY.data));
 
 					result += B[i] * K[i];
 				}
@@ -49,7 +44,7 @@ namespace СomputationMath.Task_5
 			C[0] = 0;
 			C[1] = c2;
 			var B = new double[2];
-			B[1] = 1 / (2 * c2);
+			B[1] = 1.0 / (2 * c2);
 			B[0] = 1 - B[1];
 			var A = new double[2][];
 			A[0] = new double[2] { 0, 0 };
@@ -174,17 +169,87 @@ namespace СomputationMath.Task_5
 
 			var result = new Vector[n];
 
-			var vectorY = new Vector(Y0.Length);
-			vectorY.SetValues(Y0);
+			var tempVectorY = new Vector(Y0);
 
-			double X;
+			double tempX;
 
 			for (int i = 0; i < n; i++)
 			{
-				result[i] = new Vector(vectorY.data);
-				X = x0 + h * i;
-				vectorY += h * rk(X, vectorY.data, h);
+				result[i] = new Vector(tempVectorY.data);
+				tempX = x0 + h * i;
+				tempVectorY += h * rk(tempX, tempVectorY.data, h);
 			}
+			return result;
+		}
+
+		public static Pair<double[], Vector[]> Result_VariableH(double x0, double xN, double[] Y0, MethodRK rk, int p, double h0, double rtol = 1e-6, double atol = 1e-12)
+		{
+			var resultX = new List<double>();
+			var resultY = new List<Vector>();
+
+			var tempVectorY = new Vector(Y0);
+			double tempX = x0;
+
+			double h1 = h0;
+			double h2;
+
+			var resultY_H1 = new Vector(Y0.Length);
+			var resultY_H2_1 = new Vector(Y0.Length);
+			var resultY_H2_2 = new Vector(Y0.Length);
+
+			do
+			{
+				h2 = h1 / 2;
+
+				resultY_H1.Copy(tempVectorY + h1 * rk(tempX, tempVectorY.data, h1));
+
+				resultY_H2_1.Copy(tempVectorY + h2 * rk(tempX, tempVectorY.data, h2));
+				resultY_H2_2.Copy(resultY_H2_1 + h2 * rk(tempX + h2, resultY_H2_1.data, h2));
+
+				var R1 =  ((1.0 / (1 - Math.Pow(2, -p))) * (resultY_H2_2 - resultY_H1)).Norm();
+				var tol = rtol * resultY_H1.Norm() + atol;
+
+				if (R1 > tol * Math.Pow(2, p))
+				{
+					//Потворяем с этими значениями
+					h1 /= 2;
+					tempVectorY = new Vector(resultY_H2_1.data);
+				}
+				if (tol < R1 && R1 <= tol * Math.Pow(2, p))
+				{
+					resultX.Add(tempX);
+					resultY.Add(tempVectorY);
+
+					tempX += h1;
+					tempVectorY = new Vector(resultY_H2_2.data);
+
+					h1 /= 2;
+				}
+				if (tol * (1 / Math.Pow(2, p + 1)) <= R1 && R1 <= tol)
+				{
+					resultX.Add(tempX);
+					resultY.Add(tempVectorY);
+
+					tempX += h1;
+					tempVectorY = new Vector(resultY_H1.data);
+				}
+				if (R1 < tol * (1 / Math.Pow(2, p + 1)))
+				{
+					resultX.Add(tempX);
+					resultY.Add(tempVectorY);
+
+					tempX += h1;
+					tempVectorY = new Vector(resultY_H1.data);
+
+					h1 *= 2;
+				}
+			} while (tempX < xN);
+
+			var result = new Pair<double[], Vector[]>
+			{
+				FirstElement = resultX.ToArray(),
+				SecondElement = resultY.ToArray()
+			};
 			return result;
 		}
 
@@ -203,10 +268,24 @@ namespace СomputationMath.Task_5
 				if (i == k - 1)
 				{
 					R.data[i] = ((1 / (Math.Pow(2, p) - 1)) * (resTemp - resPred)).Norm();
-				}
+				}	
 				resPred.Copy(resTemp);
 			}
 			return R;
+		}
+
+		public static double H_Opt(double x0, double xN, double[] Y0, MethodRK rk, int p, double tol)
+		{
+			var k_runge = 5;
+
+			var h1 = 1.0 / Math.Pow(2, k_runge);
+			var resultH1 = OduCalculation.Result_ConstH(x0, xN, Y0, rk, h1);
+			var h2 = 1.0 / Math.Pow(2, k_runge + 1);
+			var resultH2 = OduCalculation.Result_ConstH(x0, xN, Y0, rk, h2);
+
+			var R2 = ((1 / (Math.Pow(2, p) - 1)) * (resultH2.Last() - resultH1.Last())).Norm();
+
+			return h2 * Math.Pow(tol / R2, 1.0 / p); 
 		}
 	}
 

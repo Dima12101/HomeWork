@@ -28,7 +28,7 @@ namespace СomputationMath
 		{
 			for (int i = 0; i < data.Length; i++)
 			{
-				Console.Write(data[i].ToString("0.000000") + ' ');
+				Console.Write(data[i].ToString("0.0000000000") + ' ');
 			}
 			Console.Write('\n');
 		}
@@ -36,7 +36,7 @@ namespace СomputationMath
 		{
 			for (int i = 0; i < data.Length; i++)
 			{
-				Console.Write(data[i].ToString("0.000000") + '\n');
+				Console.Write(data[i].ToString("0.0000000000") + '\n');
 			}
 			Console.Write('\n');
 		}

@@ -10,7 +10,7 @@ namespace СomputationMath.Task_4
 {
 	static class IntegralCalculation
 	{
-		static public double MiddleRectangleRule (ScalarFunk1 F,double a, double b, int n)
+		static public double MiddleRectangleRule(ScalarFunk1 F, double a, double b, int n)
 		{
 			double result = 0.0;
 
@@ -159,7 +159,7 @@ namespace СomputationMath.Task_4
 			return result;
 		}
 
-		public enum TypeKF { NewtonCots , Gauss }
+		public enum TypeKF { NewtonCots, Gauss }
 		static public double SKF(TypeKF typeKF, ScalarFunk1 f, double defA, double a, double b, double alpha, int n, double h)
 		{
 			int k = (Int32)((b - a) / h);
@@ -187,7 +187,7 @@ namespace СomputationMath.Task_4
 			vectorH.data[1] = b - a;
 			vectorH.data[2] = (b - a) / L;
 
-			int countIter = 2;
+			int countIter = 1;
 
 			double result = 0.0;
 
@@ -204,10 +204,10 @@ namespace СomputationMath.Task_4
 				vectorS.data[1] = SKF(typeKF, f, defA, a, b, alpha, n, vectorH.data[1]);
 				vectorS.data[2] = SKF(typeKF, f, defA, a, b, alpha, n, vectorH.data[2]);
 
-				double m = -Math.Log((vectorS.data[2] - vectorS.data[1]) / (vectorS.data[1] - vectorS.data[0])) / Math.Log(L);
+				double m = -Math.Log((Math.Abs(vectorS.data[2] - vectorS.data[1])) / (Math.Abs(vectorS.data[1] - vectorS.data[0]))) / Math.Log(L);
 
 				//Рижардсон
-				
+
 				Matrix matrix_Cs_J = new Matrix(3);
 				for (int i = 0; i < matrix_Cs_J.N; i++)
 				{
@@ -227,13 +227,93 @@ namespace СomputationMath.Task_4
 
 				result = vector_Cs_J.data[2];
 				tempR = vectorS.data[2] - result;
-				//for (int i = 0; i < 2; i++)
-				//{
-				//	tempR += vector_Cs_J.data[i] * matrix_Cs_J.data[0][i];
-				//}
 			} while (Math.Abs(tempR) > Eps);
-			Console.WriteLine($"Count iter: {countIter}");
+			Console.WriteLine($"Count iter: {Math.Pow(L, countIter)}");
 			return result;
+		}
+
+		static public double AnalysisMethod_Opt(TypeKF typeKF, ScalarFunk1 f, double defA, double a, double b, double alpha, int n, double Eps)
+		{
+			double L = 2;
+			Vector vectorH = new Vector(3);
+			vectorH.data[0] = b - a;
+			vectorH.data[1] = vectorH.data[0] / L;
+			vectorH.data[2] = vectorH.data[1] / L;
+
+			//Эйткен
+			Vector vectorS = new Vector(3);
+			vectorS.data[0] = SKF(typeKF, f, defA, a, b, alpha, n, vectorH.data[0]);
+			vectorS.data[1] = SKF(typeKF, f, defA, a, b, alpha, n, vectorH.data[1]);
+			vectorS.data[2] = SKF(typeKF, f, defA, a, b, alpha, n, vectorH.data[2]);
+
+			double m = -Math.Log((vectorS.data[2] - vectorS.data[1]) / (vectorS.data[1] - vectorS.data[0])) / Math.Log(L);
+
+			double R = (vectorS.data[2] - vectorS.data[1]) / (Math.Pow(L, m) - 1);
+
+			double h_opt = vectorH.data[2] * Math.Pow(Eps / Math.Abs(R), 1.0 / m);
+
+			int k = (Int32)Math.Ceiling((b - a) / h_opt);
+			Console.WriteLine($"Count opt: {k}");
+			double logK = Math.Log(k) / Math.Log(L);
+			//logK = Math.Ceiling(logK);
+			k = (int)Math.Pow(L, logK);
+
+			vectorH.data[1] = ((b - a) / k) * L * L;
+			vectorH.data[2] = ((b - a) / k) * L;
+
+
+
+			if (vectorH.data[1] > (b - a) || vectorH.data[2] > (b - a))
+			{
+				Console.WriteLine($"Count iter: {3}");
+				return vectorS.data[2];
+			}
+			else
+			{
+				int countIter = (int)logK;
+
+				double result = 0.0;
+
+				double tempR = Double.PositiveInfinity;
+				do
+				{
+					countIter++;
+					vectorH.data[0] = vectorH.data[1];
+					vectorH.data[1] = vectorH.data[2];
+
+					vectorH.data[2] = vectorH.data[1] / L;
+					//Эйткен
+					vectorS.data[0] = SKF(typeKF, f, defA, a, b, alpha, n, vectorH.data[0]);
+					vectorS.data[1] = SKF(typeKF, f, defA, a, b, alpha, n, vectorH.data[1]);
+					vectorS.data[2] = SKF(typeKF, f, defA, a, b, alpha, n, vectorH.data[2]);
+
+					m = -Math.Log((Math.Abs(vectorS.data[2] - vectorS.data[1])) / (Math.Abs(vectorS.data[1] - vectorS.data[0]))) / Math.Log(L);
+
+					//Рижардсон
+
+					Matrix matrix_Cs_J = new Matrix(3);
+					for (int i = 0; i < matrix_Cs_J.N; i++)
+					{
+						for (int j = 0; j < matrix_Cs_J.N - 1; j++)
+						{
+							matrix_Cs_J.data[i][j] = Math.Pow(vectorH.data[i], m + j);
+						}
+						matrix_Cs_J.data[i][matrix_Cs_J.N - 1] = -1;
+					}
+
+					Matrix matrix_Cs_J_L = new Matrix(n);
+					Matrix matrix_Cs_J_U = new Matrix(n);
+					Matrix matrix_Cs_J_P = new Matrix(n);
+					LUP_decomposition.LUP(matrix_Cs_J, matrix_Cs_J_L, matrix_Cs_J_U, matrix_Cs_J_P);
+
+					Vector vector_Cs_J = LUP_decomposition.SLAU(matrix_Cs_J_L, matrix_Cs_J_U, matrix_Cs_J_P, -1 * vectorS);
+
+					result = vector_Cs_J.data[2];
+					tempR = vectorS.data[2] - result;
+				} while (Math.Abs(tempR) > Eps);
+				Console.WriteLine($"Count iter: {Math.Pow(L, countIter)}");
+				return result;
+			}
 		}
 	}
 }

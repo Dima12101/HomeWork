@@ -464,13 +464,10 @@ namespace СomputationMath
 			double result_MRR = IntegralCalculation.MiddleRectangleRule(F, a, b, countNode_MRR);
 			Console.WriteLine($"Result by MiddleRectangleRule (CountNode: {countNode_MRR}): {result_MRR}");
 
+
 			int countNode_IKF_NC = 3;
 			double result_IKF_NC = IntegralCalculation.IKF_NewtonCots(f, defA, a, b, alpha, countNode_IKF_NC);
-			Console.WriteLine($"Result by IKF_NewtonCots (CountNode: {countNode_IKF_NC}): {result_IKF_NC}");
-
-			int countNode_KF_G = 3;
-			double result_KF_G = IntegralCalculation.KF_Gauss(f, defA, a, b, alpha, countNode_KF_G);
-			Console.WriteLine($"Result by KF_Gauss (CountNode: {countNode_KF_G}): {result_KF_G}");
+			Console.WriteLine($"\n\nResult by IKF_NewtonCots (CountNode: {countNode_IKF_NC}): {result_IKF_NC}");
 
 			int countNode_SKF_NC = 3;
 			int countPart_SKF_NC = 3;
@@ -478,19 +475,23 @@ namespace СomputationMath
 			double result_SKF_NC = IntegralCalculation.SKF(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_SKF_NC, h_SKF_NC);
 			Console.WriteLine($"Result by SKF IKF_NewtonCots (CountNode: {countNode_SKF_NC}; StepH: {h_SKF_NC};): {result_SKF_NC}");
 
-			//__
-			int L = 2;
-			double result_SKF_NC_check = IntegralCalculation.SKF(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_SKF_NC, h_SKF_NC / L);
-			double Eps_SKF_NC_check = (result_SKF_NC_check - result_SKF_NC) / (1 - Math.Pow(2, -countNode_SKF_NC));
+			Console.WriteLine($"\nAnalysisMethod_NewtonCots");
+			int countNode_analys_NC = 3;
+			double Eps_analys_NC = 10e-6; ;
+			double result_analys_NC = IntegralCalculation.AnalysisMethod(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_analys_NC, Eps_analys_NC);
+			Console.WriteLine($"Result : {result_analys_NC}");
 
-			double Eps_SKF_NC = 10e-15;
-			double h_SKF_NC_opt = h_SKF_NC * Math.Pow(Eps_SKF_NC / Math.Abs(Eps_SKF_NC_check), 1 / countNode_SKF_NC);
-			h_SKF_NC_opt = (b - a) / ((b - a) / h_SKF_NC_opt);
-			double result_SKF_NC_better = IntegralCalculation.SKF(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_SKF_NC, h_SKF_NC_opt);
-			Console.WriteLine($"Result by SKF IKF_NewtonCots (CountNode: {countNode_SKF_NC}; StepH_opt: {h_SKF_NC_opt};; Eps: {Eps_SKF_NC}): {result_SKF_NC_better}");
-			//__
+			Console.WriteLine($"\nAnalysisMethod_Opt_NewtonCots");
+			int countNode_analys_Opt_NC = 3;
+			double Eps_analys_Opt_NC = 10e-6; ;
+			double result_analys_Opt_NC = IntegralCalculation.AnalysisMethod_Opt(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_analys_Opt_NC, Eps_analys_Opt_NC);
+			Console.WriteLine($"Result : {result_analys_Opt_NC}");
 
+			Console.WriteLine("___________________________________________________________________________________________");
 
+			int countNode_KF_G = 3;
+			double result_KF_G = IntegralCalculation.KF_Gauss(f, defA, a, b, alpha, countNode_KF_G);
+			Console.WriteLine($"\n\nResult by KF_Gauss (CountNode: {countNode_KF_G}): {result_KF_G}");
 
 			int countNode_SKF_G = 3;
 			int countPart_SKF_G = 3;
@@ -499,15 +500,23 @@ namespace СomputationMath
 			Console.WriteLine($"Result by SKF KF_Gauss (CountNode: {countNode_SKF_G}; StepH: {h_SKF_G};): {result_SKF_G}");
 
 
-			int countNode_test = 3;
-			double Eps = 10e-6; ;
-			double result_test = IntegralCalculation.AnalysisMethod(IntegralCalculation.TypeKF.NewtonCots, f, defA, a, b, alpha, countNode_test, Eps);
-			Console.WriteLine($"Result by AnalysisMethod : {result_test}");
+			Console.WriteLine($"\nAnalysisMethod_Gauss");
+			int countNode_analys_G = 3;
+			double Eps_analys_G = 10e-6; ;
+			double result_analys_G = IntegralCalculation.AnalysisMethod(IntegralCalculation.TypeKF.Gauss, f, defA, a, b, alpha, countNode_analys_G, Eps_analys_G);
+			Console.WriteLine($"Result : {result_analys_G}");
+
+			Console.WriteLine($"\nAnalysisMethod_Opt_Gauss");
+			int countNode_analys_Opt_G = 3;
+			double Eps_analys_Opt_G = 10e-6; ;
+			double result_analys_Opt_G = IntegralCalculation.AnalysisMethod_Opt(IntegralCalculation.TypeKF.Gauss, f, defA, a, b, alpha, countNode_analys_Opt_G, Eps_analys_Opt_G);
+			Console.WriteLine($"Result : {result_analys_Opt_G}");
 		}
 		#endregion
 
 		static void Main(string[] args)
 		{
+			#region Условия
 			double c2 = 0.05;
 
 			double x0 = 0;
@@ -522,7 +531,7 @@ namespace СomputationMath
 			VectorFunk f = (double X, double[] Y) =>
 			{
 				var resultY = new double[Y.Length];
-				resultY[0] = 2 * X * Math.Pow(Math.Abs(Y[1]), 1 / B) * Math.Sign(Y[1]) * Y[3];
+				resultY[0] = 2 * X * Math.Pow(Math.Abs(Y[1]), 1.0 / B) * Math.Sign(Y[1]) * Y[3];
 				resultY[1] = 2 * B * X * Math.Exp((B / C) * (Y[2] - A)) * Y[3];
 				resultY[2] = 2 * C * X * Y[3];
 				resultY[3] = -2 * X * Math.Log(Math.Abs(Y[0]));
@@ -530,48 +539,105 @@ namespace СomputationMath
 				return resultY;
 			};
 
+			var realFunc = new ScalarFunk1[4];
+			realFunc[0] = (double X) => Math.Exp(Math.Sin(X * X));
+			realFunc[1] = (double X) => Math.Exp(B * Math.Sin(X * X));
+			realFunc[2] = (double X) => C * Math.Sin(X * X) + A;
+			realFunc[3] = (double X) => Math.Cos(X * X);
+			#endregion
+			var resCheck = new Vector(new double[] { realFunc[0](xN), realFunc[1](xN), realFunc[2](xN), realFunc[3](xN) });
+
+			//Создание методов
 			var methodC2_rk = OduCalculation.CreateMethod_byC2_P2S2(c2, f);
 			var middlePoint_rk = OduCalculation.GetMethod_MiddlePoint_P2S2(f);
 
-			//int k = 0;
-			//double h = 1 / Math.Pow(2, 15);
-			//var result_methodC2 = OduCalculation.Result_ConstH(x0, xN, Y0, methodC2_rk, h);
-			//var result_middlePoint = OduCalculation.Result_ConstH(x0, xN, Y0, middlePoint_rk, h);
 
-			int k = 7;
-			var Rs_methodC2 = OduCalculation.GetRs(x0, xN, Y0, methodC2_rk, k, 2);
-			Console.WriteLine("Rs methodC2: "); 
-			Rs_methodC2.Show1();
-			var Rs_MiddlePoint = OduCalculation.GetRs(x0, xN, Y0, middlePoint_rk, k, 2);
-			Console.WriteLine("\nRs middlePoint: ");
-			Rs_MiddlePoint.Show1();
+			//Запуск на константном шаге
+			int k = 9;
+			double h = 1 / Math.Pow(2, k);
+			var result_methodC2 = OduCalculation.Result_ConstH(x0, xN, Y0, methodC2_rk, h);
+			var result_middlePoint = OduCalculation.Result_ConstH(x0, xN, Y0, middlePoint_rk, h);
 
-			var tol = 1e-5;
-			var h_last = 1.0 / Math.Pow(2, k - 1);
-			var v1 = Math.Pow(tol / Rs_methodC2.data[k - 1], 0.5);
-			var h_opt_c2 = h_last * v1;
-			var v2 = Math.Pow(tol / Rs_MiddlePoint.data[k - 1], 0.5);
-			var h_opt_mp = h_last * v2;
+			#region Принт точек
+			//for (int i = 0; i < result_methodC2.Length; i++)
+			//{
+			//	string tempPoint = $"({x0 + i * h}".Replace(',', '.') + ", " + $"{result_methodC2[i].data[0]})".Replace(',', '.');
+			//	Console.Write($"{tempPoint}, ");
+			//}
+			#endregion
 
-
+			#region Все итерации
 			//Console.Write("\nx: ");
 			//for (int i = 0; i < 4; i++)
 			//{
 			//	Console.Write($" y{i}");
 			//}
-
-			//for (int i = 0; i < 100; i++)
-			//{
-			//	string tempPoint = $"({x0 + i * h}".Replace(',', '.') + ", " + $"{result_methodC2[i].data[0]})".Replace(',', '.');
-			//	Console.Write($"{tempPoint}, ");
-			//}
-
 			//Console.WriteLine("\nResult methodC2:");
-			//for (int i = 0; i < 20; i++)
+			//for (int i = 0; i < result_methodC2.Length; i++)
 			//{
-			//	Console.Write($"\n{x0 + i * h}: ");
+			//	Console.Write($"\n{i} ({x0 + i * h}): ");
 			//	result_methodC2[i].Show();
 			//}
+			#endregion
+
+			#region Сравнение
+			//Console.WriteLine("\nCheck methodC2:");
+			//(resCheck - result_methodC2[result_methodC2.Length - 1]).Show();
+			#endregion
+
+			#region Для графика зависимости нормы от длины шага
+			//int k_end = 7;
+			//int p = 2;
+			//var Rs_methodC2 = OduCalculation.GetRs(x0, xN, Y0, methodC2_rk, k_end, p);
+			//Console.WriteLine("Rs methodC2: ");
+			//Rs_methodC2.Show1();
+			//var Rs_MiddlePoint = OduCalculation.GetRs(x0, xN, Y0, middlePoint_rk, k_end, p);
+			//Console.WriteLine("\nRs middlePoint: ");
+			//Rs_MiddlePoint.Show1();
+			#endregion
+
+			#region Нахождение h_opt по Рунге
+			var tol = 1e-5;
+			var p = 2;
+			var h_opt_c2 = OduCalculation.H_Opt(x0, xN, Y0, methodC2_rk, p, tol);
+			Console.Write($"\nh_opt_c2: {h_opt_c2}");
+			var h_opt_mp = OduCalculation.H_Opt(x0, xN, Y0, middlePoint_rk, p, tol);
+			Console.Write($"\nh_opt_mp: {h_opt_mp}");
+
+			//var result_methodC2_check = OduCalculation.Result_ConstH(x0, xN, Y0, methodC2_rk, h_opt_c2);
+			//Console.WriteLine("\nCheck methodC2 with h_opt:");
+			//(resCheck - result_methodC2_check[result_methodC2_check.Length - 1]).Show();
+
+			//var result_middlePoint_check = OduCalculation.Result_ConstH(x0, xN, Y0, methodC2_rk, h_opt_c2);
+			//Console.WriteLine("\nCheck middlePoin with h_opt:");
+			//(resCheck - result_middlePoint_check[result_middlePoint_check.Length - 1]).Show();
+			#endregion
+
+			var h_begin = 1 / Math.Pow(2, 6);
+			var result_methodC2_varH = OduCalculation.Result_VariableH(x0, xN, Y0, methodC2_rk, p, h_begin);
+			var R_check_c2 = 0.0;
+			for (int i = 0; i < result_methodC2_varH.FirstElement.Length; i++)
+			{
+				var tempX = result_methodC2_varH.FirstElement[i];
+
+				var calculateY = result_methodC2_varH.SecondElement[i];
+				var realY = new Vector(new double[] { realFunc[0](tempX), realFunc[1](tempX), realFunc[2](tempX), realFunc[3](tempX) });
+
+				R_check_c2 = (realY - calculateY).Norm();
+			}
+			Console.Write($"\nCheck methodC2 with varH: {R_check_c2}");
+
+			for (int i = 0; i < result_methodC2_varH.FirstElement.Length; i++)
+			{
+				var tempX = result_methodC2_varH.FirstElement[i];
+				var tempY = result_methodC2_varH.SecondElement[i];
+				string tempPoint = $"({tempX}".Replace(',', '.') + ", " + $"{tempY.data[0]})".Replace(',', '.');
+				Console.Write($"{tempPoint}, ");
+			}
+
+
+
+
 
 			//Console.WriteLine("Result middlePoint:");
 			//for (int i = 0; i < 20; i++)
