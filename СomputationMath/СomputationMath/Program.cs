@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using СomputationMath.Task_1;
 using СomputationMath.Task_2;
@@ -539,24 +540,30 @@ namespace СomputationMath
 				return resultY;
 			};
 
-			var realFunc = new ScalarFunk1[4];
-			realFunc[0] = (double X) => Math.Exp(Math.Sin(X * X));
-			realFunc[1] = (double X) => Math.Exp(B * Math.Sin(X * X));
-			realFunc[2] = (double X) => C * Math.Sin(X * X) + A;
-			realFunc[3] = (double X) => Math.Cos(X * X);
+			var realFuncs = new ScalarFunk1[4];
+			realFuncs[0] = (double X) => Math.Exp(Math.Sin(X * X));
+			realFuncs[1] = (double X) => Math.Exp(B * Math.Sin(X * X));
+			realFuncs[2] = (double X) => C * Math.Sin(X * X) + A;
+			realFuncs[3] = (double X) => Math.Cos(X * X);
 			#endregion
-			var resCheck = new Vector(new double[] { realFunc[0](xN), realFunc[1](xN), realFunc[2](xN), realFunc[3](xN) });
+			VectorFunk1 valueInRealFunc = (double X) => new double[] { realFuncs[0](X), realFuncs[1](X), realFuncs[2](X), realFuncs[3](X) };
 
 			//Создание методов
+			int p_C2 = 2;
+			int p_MP = 2; 
 			var methodC2_rk = OduCalculation.CreateMethod_byC2_P2S2(c2, f);
 			var middlePoint_rk = OduCalculation.GetMethod_MiddlePoint_P2S2(f);
 
 
 			//Запуск на константном шаге
-			int k = 9;
-			double h = 1 / Math.Pow(2, k);
-			var result_methodC2 = OduCalculation.Result_ConstH(x0, xN, Y0, methodC2_rk, h);
-			var result_middlePoint = OduCalculation.Result_ConstH(x0, xN, Y0, middlePoint_rk, h);
+			int k_const = 9;
+			double h_const = 1 / Math.Pow(2, k_const);
+			var result_methodC2_ConstH = OduCalculation.Result_ConstH(x0, xN, Y0, methodC2_rk, h_const);
+			var result_methodMP_ConstH = OduCalculation.Result_ConstH(x0, xN, Y0, middlePoint_rk, h_const);
+
+			//ExcelTool.GetInstance().Export_points_4Func("MethodC2_ConstH", result_methodC2_ConstH, valueInRealFunc);
+			//ExcelTool.GetInstance().Export_points_4Func("MethodMP_ConstH", result_methodMP_ConstH, valueInRealFunc);
+
 
 			#region Принт точек
 			//for (int i = 0; i < result_methodC2.Length; i++)
@@ -580,71 +587,64 @@ namespace СomputationMath
 			//}
 			#endregion
 
-			#region Сравнение
-			//Console.WriteLine("\nCheck methodC2:");
-			//(resCheck - result_methodC2[result_methodC2.Length - 1]).Show();
+
+			#region Сравнение с реальным значением
+			Console.WriteLine("\nDifferent methodC2 with real in last point:");
+			(new Vector(valueInRealFunc(result_methodC2_ConstH.Last().FirstElement)) - result_methodC2_ConstH.Last().SecondElement).Show();
+			Console.WriteLine("\nDifferent methodMP with real in last point:");
+			(new Vector(valueInRealFunc(result_methodMP_ConstH.Last().FirstElement)) - result_methodMP_ConstH.Last().SecondElement).Show();
 			#endregion
 
 			#region Для графика зависимости нормы от длины шага
-			//int k_end = 7;
-			//int p = 2;
-			//var Rs_methodC2 = OduCalculation.GetRs(x0, xN, Y0, methodC2_rk, k_end, p);
-			//Console.WriteLine("Rs methodC2: ");
-			//Rs_methodC2.Show1();
-			//var Rs_MiddlePoint = OduCalculation.GetRs(x0, xN, Y0, middlePoint_rk, k_end, p);
-			//Console.WriteLine("\nRs middlePoint: ");
-			//Rs_MiddlePoint.Show1();
+			int k_end = 7;
+			var Rs_methodC2 = OduCalculation.GetRs(x0, xN, Y0, methodC2_rk, k_end, p_C2);
+			Console.WriteLine("\nRs methodC2: ");
+			Rs_methodC2.Show1();
+			var Rs_MiddlePoint = OduCalculation.GetRs(x0, xN, Y0, middlePoint_rk, k_end, p_MP);
+			Console.WriteLine("Rs middlePoint: ");
+			Rs_MiddlePoint.Show1();
 			#endregion
 
 			#region Нахождение h_opt по Рунге
-			var tol = 1e-5;
-			var p = 2;
-			var h_opt_c2 = OduCalculation.H_Opt(x0, xN, Y0, methodC2_rk, p, tol);
+			var tol = 10e-5;
+			var h_opt_c2 = OduCalculation.H_Opt(x0, xN, Y0, methodC2_rk, p_C2, tol);
 			Console.Write($"\nh_opt_c2: {h_opt_c2}");
-			var h_opt_mp = OduCalculation.H_Opt(x0, xN, Y0, middlePoint_rk, p, tol);
+			var h_opt_mp = OduCalculation.H_Opt(x0, xN, Y0, middlePoint_rk, p_MP, tol);
 			Console.Write($"\nh_opt_mp: {h_opt_mp}");
 
-			//var result_methodC2_check = OduCalculation.Result_ConstH(x0, xN, Y0, methodC2_rk, h_opt_c2);
-			//Console.WriteLine("\nCheck methodC2 with h_opt:");
-			//(resCheck - result_methodC2_check[result_methodC2_check.Length - 1]).Show();
+			var result_methodC2_check = OduCalculation.Result_ConstH(x0, xN, Y0, methodC2_rk, h_opt_c2);
+			var R_methodC2_check = (new Vector(valueInRealFunc(result_methodC2_check.Last().FirstElement)) - result_methodC2_check.Last().SecondElement).Norm();
+			Console.WriteLine($"\nCheck R methodC2 with h_opt: {R_methodC2_check}");
 
-			//var result_middlePoint_check = OduCalculation.Result_ConstH(x0, xN, Y0, methodC2_rk, h_opt_c2);
-			//Console.WriteLine("\nCheck middlePoin with h_opt:");
-			//(resCheck - result_middlePoint_check[result_middlePoint_check.Length - 1]).Show();
+			var result_methodMP_check = OduCalculation.Result_ConstH(x0, xN, Y0, methodC2_rk, h_opt_c2);
+			var R_methodMP_check = (new Vector(valueInRealFunc(result_methodMP_check.Last().FirstElement)) - result_methodMP_check.Last().SecondElement).Norm();
+			Console.WriteLine($"Check R methodMP with h_opt: {R_methodMP_check}");
+
+			var realRsOnX_methodC2_h_opt = OduCalculation.RealRsOnX(result_methodC2_check, valueInRealFunc);
+			var realRsOnX_methodMP_h_opt = OduCalculation.RealRsOnX(result_methodMP_check, valueInRealFunc);
+
+			//ExcelTool.GetInstance().Export_RealRsOnX("RsOnX_methodC2_hOpt", realRsOnX_methodC2_h_opt);
+			//ExcelTool.GetInstance().Export_RealRsOnX("RsOnX_methodMP_hOpt", realRsOnX_methodMP_h_opt);
 			#endregion
 
 			var h_begin = 1 / Math.Pow(2, 6);
-			var result_methodC2_varH = OduCalculation.Result_VariableH(x0, xN, Y0, methodC2_rk, p, h_begin);
-			var R_check_c2 = 0.0;
-			for (int i = 0; i < result_methodC2_varH.FirstElement.Length; i++)
-			{
-				var tempX = result_methodC2_varH.FirstElement[i];
+			var result_methodC2_varH = OduCalculation.Result_VariableH(x0, xN, Y0, methodC2_rk, p_C2, h_begin);
+			Console.WriteLine("\nDifferent methodC2 with real in last point:");
+			(new Vector(valueInRealFunc(result_methodC2_varH.Last().FirstElement)) - result_methodC2_varH.Last().SecondElement).Show();
 
-				var calculateY = result_methodC2_varH.SecondElement[i];
-				var realY = new Vector(new double[] { realFunc[0](tempX), realFunc[1](tempX), realFunc[2](tempX), realFunc[3](tempX) });
+			var result_methodMP_varH = OduCalculation.Result_VariableH(x0, xN, Y0, middlePoint_rk, p_C2, h_begin);
+			Console.WriteLine("\nDifferent methodC2 with real in last point:");
+			(new Vector(valueInRealFunc(result_methodMP_varH.Last().FirstElement)) - result_methodMP_varH.Last().SecondElement).Show();
 
-				R_check_c2 = (realY - calculateY).Norm();
-			}
-			Console.Write($"\nCheck methodC2 with varH: {R_check_c2}");
+			//ExcelTool.GetInstance().Export_points_4Func("MethodC2_VarH", result_methodC2_varH, valueInRealFunc);
+			//ExcelTool.GetInstance().Export_points_4Func("MethodMP_VarH", result_methodMP_varH, valueInRealFunc);
 
-			for (int i = 0; i < result_methodC2_varH.FirstElement.Length; i++)
-			{
-				var tempX = result_methodC2_varH.FirstElement[i];
-				var tempY = result_methodC2_varH.SecondElement[i];
-				string tempPoint = $"({tempX}".Replace(',', '.') + ", " + $"{tempY.data[0]})".Replace(',', '.');
-				Console.Write($"{tempPoint}, ");
-			}
+			var realRsOnX_methodC2_h_var = OduCalculation.RealRsOnX(result_methodC2_varH, valueInRealFunc);
+			var realRsOnX_methodMP_h_var = OduCalculation.RealRsOnX(result_methodMP_varH, valueInRealFunc);
 
+			//ExcelTool.GetInstance().Export_RealRsOnX("RsOnX_methodC2_hVar", realRsOnX_methodC2_h_var);
+			//ExcelTool.GetInstance().Export_RealRsOnX("RsOnX_methodMP_hVar", realRsOnX_methodMP_h_var);
 
-
-
-
-			//Console.WriteLine("Result middlePoint:");
-			//for (int i = 0; i < 20; i++)
-			//{
-			//	Console.Write($"\ny{i}: ");
-			//	result_middlePoint[i].Show();
-			//}
 		}
 	}
 }

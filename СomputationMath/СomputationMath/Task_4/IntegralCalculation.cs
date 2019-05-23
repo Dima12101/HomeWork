@@ -252,11 +252,12 @@ namespace СomputationMath.Task_4
 
 			double h_opt = vectorH.data[2] * Math.Pow(Eps / Math.Abs(R), 1.0 / m);
 
+			//Чтобы укладывался в отрезок [a, b]
 			int k = (Int32)Math.Ceiling((b - a) / h_opt);
 			Console.WriteLine($"Count opt: {k}");
-			double logK = Math.Log(k) / Math.Log(L);
+			//double logK = Math.Log(k) / Math.Log(L);
 			//logK = Math.Ceiling(logK);
-			k = (int)Math.Pow(L, logK);
+			//k = (int)Math.Pow(L, logK);
 
 			vectorH.data[1] = ((b - a) / k) * L * L;
 			vectorH.data[2] = ((b - a) / k) * L;
@@ -265,19 +266,19 @@ namespace СomputationMath.Task_4
 
 			if (vectorH.data[1] > (b - a) || vectorH.data[2] > (b - a))
 			{
-				Console.WriteLine($"Count iter: {3}");
+				Console.WriteLine($"Count iter: {Math.Pow(L, 3)}");
 				return vectorS.data[2];
 			}
 			else
 			{
-				int countIter = (int)logK;
+				int countIter = (int)k;
 
 				double result = 0.0;
 
 				double tempR = Double.PositiveInfinity;
 				do
 				{
-					countIter++;
+					countIter *= (int)L;
 					vectorH.data[0] = vectorH.data[1];
 					vectorH.data[1] = vectorH.data[2];
 
@@ -289,7 +290,7 @@ namespace СomputationMath.Task_4
 
 					m = -Math.Log((Math.Abs(vectorS.data[2] - vectorS.data[1])) / (Math.Abs(vectorS.data[1] - vectorS.data[0]))) / Math.Log(L);
 
-					//Рижардсон
+					//Ричардсон
 
 					Matrix matrix_Cs_J = new Matrix(3);
 					for (int i = 0; i < matrix_Cs_J.N; i++)
@@ -311,7 +312,7 @@ namespace СomputationMath.Task_4
 					result = vector_Cs_J.data[2];
 					tempR = vectorS.data[2] - result;
 				} while (Math.Abs(tempR) > Eps);
-				Console.WriteLine($"Count iter: {Math.Pow(L, countIter)}");
+				Console.WriteLine($"Count iter: {countIter}");
 				return result;
 			}
 		}

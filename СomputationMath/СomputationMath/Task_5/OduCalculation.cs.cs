@@ -163,11 +163,11 @@ namespace СomputationMath.Task_5
 		}
 		#endregion
 
-		public static Vector[] Result_ConstH(double x0, double xN, double[] Y0, MethodRK rk, double h)
+		public static Pair<double, Vector>[] Result_ConstH(double x0, double xN, double[] Y0, MethodRK rk, double h)
 		{
 			int n = (int)((xN - x0) / h);
 
-			var result = new Vector[n];
+			var result = new Pair<double, Vector>[n];
 
 			var tempVectorY = new Vector(Y0);
 
@@ -175,17 +175,19 @@ namespace СomputationMath.Task_5
 
 			for (int i = 0; i < n; i++)
 			{
-				result[i] = new Vector(tempVectorY.data);
 				tempX = x0 + h * i;
+
+				result[i].FirstElement = tempX;
+				result[i].SecondElement = new Vector(tempVectorY.data);
+				
 				tempVectorY += h * rk(tempX, tempVectorY.data, h);
 			}
 			return result;
 		}
 
-		public static Pair<double[], Vector[]> Result_VariableH(double x0, double xN, double[] Y0, MethodRK rk, int p, double h0, double rtol = 1e-6, double atol = 1e-12)
+		public static Pair<double, Vector>[] Result_VariableH(double x0, double xN, double[] Y0, MethodRK rk, int p, double h0, double rtol = 1e-6, double atol = 1e-12)
 		{
-			var resultX = new List<double>();
-			var resultY = new List<Vector>();
+			var result = new List<Pair<double, Vector>>();
 
 			var tempVectorY = new Vector(Y0);
 			double tempX = x0;
@@ -217,8 +219,11 @@ namespace СomputationMath.Task_5
 				}
 				if (tol < R1 && R1 <= tol * Math.Pow(2, p))
 				{
-					resultX.Add(tempX);
-					resultY.Add(tempVectorY);
+					result.Add(new Pair<double, Vector>
+					{
+						FirstElement = tempX,
+						SecondElement = tempVectorY
+					});	
 
 					tempX += h1;
 					tempVectorY = new Vector(resultY_H2_2.data);
@@ -227,16 +232,22 @@ namespace СomputationMath.Task_5
 				}
 				if (tol * (1 / Math.Pow(2, p + 1)) <= R1 && R1 <= tol)
 				{
-					resultX.Add(tempX);
-					resultY.Add(tempVectorY);
+					result.Add(new Pair<double, Vector>
+					{
+						FirstElement = tempX,
+						SecondElement = tempVectorY
+					});
 
 					tempX += h1;
 					tempVectorY = new Vector(resultY_H1.data);
 				}
 				if (R1 < tol * (1 / Math.Pow(2, p + 1)))
 				{
-					resultX.Add(tempX);
-					resultY.Add(tempVectorY);
+					result.Add(new Pair<double, Vector>
+					{
+						FirstElement = tempX,
+						SecondElement = tempVectorY
+					});
 
 					tempX += h1;
 					tempVectorY = new Vector(resultY_H1.data);
@@ -245,12 +256,7 @@ namespace СomputationMath.Task_5
 				}
 			} while (tempX < xN);
 
-			var result = new Pair<double[], Vector[]>
-			{
-				FirstElement = resultX.ToArray(),
-				SecondElement = resultY.ToArray()
-			};
-			return result;
+			return result.ToArray();
 		}
 
 		public static Vector GetRs(double x0, double xN, double[] Y0, MethodRK rk, int k, int p)
@@ -258,17 +264,17 @@ namespace СomputationMath.Task_5
 			var R = new Vector(k);
 
 			double h = 1 / Math.Pow(2, 0);
-			var resPred = Result_ConstH(x0, xN, Y0, rk, h).Last();
+			var resPred = Result_ConstH(x0, xN, Y0, rk, h).Last().SecondElement;
 			for (int i = 1; i < k; i++)
 			{
 				h = 1 / Math.Pow(2, i);
-				var resTemp = Result_ConstH(x0, xN, Y0, rk, h).Last();
+				var resTemp = Result_ConstH(x0, xN, Y0, rk, h).Last().SecondElement;
+				var R1 = ((1 / (1 - Math.Pow(2, -p))) * (resTemp - resPred)).Norm();
+				var R2 = ((1 / (Math.Pow(2, p) - 1)) * (resTemp - resPred)).Norm();
 
-				R.data[i - 1] = ((1 / (1 - Math.Pow(2, -p))) * (resTemp - resPred)).Norm();
-				if (i == k - 1)
-				{
-					R.data[i] = ((1 / (Math.Pow(2, p) - 1)) * (resTemp - resPred)).Norm();
-				}	
+				R.data[i - 1] = Math.Max(R.data[i - 1], R1);
+				R.data[i] = R2;
+
 				resPred.Copy(resTemp);
 			}
 			return R;
@@ -276,16 +282,32 @@ namespace СomputationMath.Task_5
 
 		public static double H_Opt(double x0, double xN, double[] Y0, MethodRK rk, int p, double tol)
 		{
-			var k_runge = 5;
+			var k_runge = 10;
 
 			var h1 = 1.0 / Math.Pow(2, k_runge);
 			var resultH1 = OduCalculation.Result_ConstH(x0, xN, Y0, rk, h1);
 			var h2 = 1.0 / Math.Pow(2, k_runge + 1);
 			var resultH2 = OduCalculation.Result_ConstH(x0, xN, Y0, rk, h2);
 
-			var R2 = ((1 / (Math.Pow(2, p) - 1)) * (resultH2.Last() - resultH1.Last())).Norm();
+			var R2 = ((1 / (Math.Pow(2, p) - 1)) * (resultH2.Last().SecondElement - resultH1.Last().SecondElement)).Norm();
 
 			return h2 * Math.Pow(tol / R2, 1.0 / p); 
+		}
+
+		public static Pair<double, double>[] RealRsOnX(Pair<double, Vector>[] points, VectorFunk1 realValues)
+		{
+			var result = new Pair<double, double>[points.Length];
+
+			for (int i = 0; i < points.Length; i++)
+			{
+				result[i] = new Pair<double, double>
+				{
+					FirstElement = points[i].FirstElement,
+					SecondElement = (new Vector(realValues(points[i].FirstElement)) - points[i].SecondElement).Norm()
+				};
+			}
+
+			return result;
 		}
 	}
 
