@@ -165,12 +165,12 @@ namespace СomputationMath.Task_5
 
 		public static Pair<double, Vector>[] Result_ConstH(double x0, double xN, double[] Y0, MethodRK rk, double h)
 		{
+			//Кол-во шагов
 			int n = (int)((xN - x0) / h);
 
 			var result = new Pair<double, Vector>[n];
 
 			var tempVectorY = new Vector(Y0);
-
 			double tempX;
 
 			for (int i = 0; i < n; i++)
@@ -180,43 +180,84 @@ namespace СomputationMath.Task_5
 				result[i].FirstElement = tempX;
 				result[i].SecondElement = new Vector(tempVectorY.data);
 				
+				//Получаем следующие значение в текущем x
 				tempVectorY += h * rk(tempX, tempVectorY.data, h);
 			}
 			return result;
 		}
 
-		public static Pair<double, Vector>[] Result_VariableH(double x0, double xN, double[] Y0, MethodRK rk, int p, double h0, double rtol = 1e-6, double atol = 1e-12)
+		public static Pair<double, Vector>[] Result_VariableH(double x0, double xN, double[] Y0, MethodRK rk, int p, double h0,
+			ref List<Pair<double, Pair<double, List<double>>>> accH,
+			double rtol = 1e-6, double atol = 1e-12)
 		{
+			accH = new List< Pair<double, Pair<double, List<double> > > >();
+
 			var result = new List<Pair<double, Vector>>();
 
 			var tempVectorY = new Vector(Y0);
 			double tempX = x0;
 
+			//Текущий обычный шаг
 			double h1 = h0;
+			//Текущий половинный шаг
 			double h2;
 
+			//Текущий результат при обычном шаге
 			var resultY_H1 = new Vector(Y0.Length);
+			//Текущий результат при половинном шаге
 			var resultY_H2_1 = new Vector(Y0.Length);
+			//Текущий результат при двойном половинном шаге
 			var resultY_H2_2 = new Vector(Y0.Length);
+
+			var infoH = new Pair<double, Pair<double, List<double>>>();
+			var AcceptH = double.NaN;
+			var notAcceptHs = new List<double>();
+			var isAcceptH = true;
 
 			do
 			{
+				if (isAcceptH)
+				{
+					infoH = new Pair<double, Pair<double, List<double>>>
+					{
+						FirstElement = tempX,
+						SecondElement = new Pair<double, List<double>>()
+					};
+					AcceptH = double.NaN;
+					notAcceptHs = new List<double>();
+					isAcceptH = false;
+				}
+
 				h2 = h1 / 2;
 
+				//Рез на x и h1 (s1)
 				resultY_H1.Copy(tempVectorY + h1 * rk(tempX, tempVectorY.data, h1));
 
+				//Рез на x и h2 (s1/2)
 				resultY_H2_1.Copy(tempVectorY + h2 * rk(tempX, tempVectorY.data, h2));
+				//Рез на (x + h2) и h2 (s2)
 				resultY_H2_2.Copy(resultY_H2_1 + h2 * rk(tempX + h2, resultY_H2_1.data, h2));
 
+				//Погрешность по Рунге
 				var R1 =  ((1.0 / (1 - Math.Pow(2, -p))) * (resultY_H2_2 - resultY_H1)).Norm();
+
+				//Вычисляем tol = rtol*s1 + atol
 				var tol = rtol * resultY_H1.Norm() + atol;
 
+				//Проверяем все случаи
+				//1. tol * 2^p < R
 				if (R1 > tol * Math.Pow(2, p))
 				{
-					//Потворяем с этими значениями
-					h1 /= 2;
-					tempVectorY = new Vector(resultY_H2_1.data);
+					//Потворяем с этими значениями (нет занесения результата)
+					tempVectorY = new Vector(resultY_H2_1.data); //берём s1/2
+
+					notAcceptHs.Add(h1);
+					isAcceptH = false;
+
+					h1 /= 2; // уменьшаем шаг
+
 				}
+				//2.  tol < R <= tol * 2^p
 				if (tol < R1 && R1 <= tol * Math.Pow(2, p))
 				{
 					result.Add(new Pair<double, Vector>
@@ -225,11 +266,15 @@ namespace СomputationMath.Task_5
 						SecondElement = tempVectorY
 					});	
 
-					tempX += h1;
-					tempVectorY = new Vector(resultY_H2_2.data);
+					tempX += h1; //сдвигаемся
+					tempVectorY = new Vector(resultY_H2_2.data); //берём s2
 
-					h1 /= 2;
+					AcceptH = h1;
+					isAcceptH = true;
+
+					h1 /= 2;// уменьшаем шаг
 				}
+				//3.  tol * (1 / 2^(p+1)) <= R <= tol
 				if (tol * (1 / Math.Pow(2, p + 1)) <= R1 && R1 <= tol)
 				{
 					result.Add(new Pair<double, Vector>
@@ -238,9 +283,13 @@ namespace СomputationMath.Task_5
 						SecondElement = tempVectorY
 					});
 
-					tempX += h1;
-					tempVectorY = new Vector(resultY_H1.data);
+					tempX += h1;//сдвигаемся
+					tempVectorY = new Vector(resultY_H1.data);//берём s1
+
+					AcceptH = h1;
+					isAcceptH = true;
 				}
+				//4.  R < tol * (1 / 2^(p+1))
 				if (R1 < tol * (1 / Math.Pow(2, p + 1)))
 				{
 					result.Add(new Pair<double, Vector>
@@ -249,10 +298,23 @@ namespace СomputationMath.Task_5
 						SecondElement = tempVectorY
 					});
 
-					tempX += h1;
-					tempVectorY = new Vector(resultY_H1.data);
+					tempX += h1;//сдвигаемся
+					tempVectorY = new Vector(resultY_H1.data);//берём s1
 
-					h1 *= 2;
+					AcceptH = h1;
+					isAcceptH = true;
+
+					h1 *= 2;// увеличиваем шаг
+				}
+
+				if (isAcceptH)
+				{
+					infoH.SecondElement = new Pair<double, List<double>>
+					{
+						FirstElement = AcceptH,
+						SecondElement = notAcceptHs
+					};
+					accH.Add(infoH);
 				}
 			} while (tempX < xN);
 
@@ -261,15 +323,26 @@ namespace СomputationMath.Task_5
 
 		public static Vector GetRs(double x0, double xN, double[] Y0, MethodRK rk, int k, int p)
 		{
+			/*
+			 Получение точных полных погрешностей R на шагах h = 1 / (2^i) при i = 0..k
+			 */
+
 			var R = new Vector(k);
 
-			double h = 1 / Math.Pow(2, 0);
+			double h = 1 / Math.Pow(2, 0); // начальная велечина шага
+
+			//Значение Y на конце отрезка на предыдущей велечине шага
 			var resPred = Result_ConstH(x0, xN, Y0, rk, h).Last().SecondElement;
 			for (int i = 1; i < k; i++)
 			{
+				//Текущая велечина шага
 				h = 1 / Math.Pow(2, i);
+				//Значение Y на конце отрезка на текущей велечине шага
 				var resTemp = Result_ConstH(x0, xN, Y0, rk, h).Last().SecondElement;
+
+				//Погрешность для пред.шага
 				var R1 = ((1 / (1 - Math.Pow(2, -p))) * (resTemp - resPred)).Norm();
+				//Погрешность для тек.шага
 				var R2 = ((1 / (Math.Pow(2, p) - 1)) * (resTemp - resPred)).Norm();
 
 				R.data[i - 1] = Math.Max(R.data[i - 1], R1);
@@ -282,11 +355,12 @@ namespace СomputationMath.Task_5
 
 		public static double H_Opt(double x0, double xN, double[] Y0, MethodRK rk, int p, double tol)
 		{
-			var k_runge = 10;
+			var k = 10;
 
-			var h1 = 1.0 / Math.Pow(2, k_runge);
+			var h1 = 1.0 / Math.Pow(2, k);
 			var resultH1 = OduCalculation.Result_ConstH(x0, xN, Y0, rk, h1);
-			var h2 = 1.0 / Math.Pow(2, k_runge + 1);
+
+			var h2 = 1.0 / Math.Pow(2, k + 1);
 			var resultH2 = OduCalculation.Result_ConstH(x0, xN, Y0, rk, h2);
 
 			var R2 = ((1 / (Math.Pow(2, p) - 1)) * (resultH2.Last().SecondElement - resultH1.Last().SecondElement)).Norm();
@@ -309,6 +383,36 @@ namespace СomputationMath.Task_5
 
 			return result;
 		}
+
+		public static Pair<int, int>[] CountCallF_onRtol(double x0, double xN, double[] Y0, MethodRK rk, int p, int s)
+		{
+			var h_begin = 1 / Math.Pow(2, 6);
+
+			var rtol = 1e-4;
+
+			var tempDegree = 4;
+
+			var result = new Pair<int, int>[5];
+
+			for (int i = 0; i < 5; i++)
+			{
+				var accH = new List<Pair<double, Pair<double, List<double>>>>();
+				Result_VariableH(x0, xN, Y0, rk, p, h_begin, ref accH, rtol);
+
+				var countAddCallRK = accH.Sum(infoH => infoH.SecondElement.SecondElement.Count());
+
+				result[i] = new Pair<int, int>
+				{
+					FirstElement = tempDegree,
+					SecondElement = s * (accH.Count() + countAddCallRK)
+				};
+
+				tempDegree++;
+				rtol /= 10;
+			}
+			return result;
+		}
+
 	}
 
 }

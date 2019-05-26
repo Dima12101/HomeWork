@@ -555,7 +555,7 @@ namespace СomputationMath
 			var middlePoint_rk = OduCalculation.GetMethod_MiddlePoint_P2S2(f);
 
 
-			//Запуск на константном шаге
+			#region Запуск на константном шаге
 			int k_const = 9;
 			double h_const = 1 / Math.Pow(2, k_const);
 			var result_methodC2_ConstH = OduCalculation.Result_ConstH(x0, xN, Y0, methodC2_rk, h_const);
@@ -563,7 +563,7 @@ namespace СomputationMath
 
 			//ExcelTool.GetInstance().Export_points_4Func("MethodC2_ConstH", result_methodC2_ConstH, valueInRealFunc);
 			//ExcelTool.GetInstance().Export_points_4Func("MethodMP_ConstH", result_methodMP_ConstH, valueInRealFunc);
-
+			#endregion
 
 			#region Принт точек
 			//for (int i = 0; i < result_methodC2.Length; i++)
@@ -627,14 +627,25 @@ namespace СomputationMath
 			//ExcelTool.GetInstance().Export_RealRsOnX("RsOnX_methodMP_hOpt", realRsOnX_methodMP_h_opt);
 			#endregion
 
+			#region Запуск на вариативном шаге
 			var h_begin = 1 / Math.Pow(2, 6);
-			var result_methodC2_varH = OduCalculation.Result_VariableH(x0, xN, Y0, methodC2_rk, p_C2, h_begin);
+			//Выбор начального шага
+			var result0 = new Vector(f(x0, Y0));
+			var delta = Math.Pow(1 / Math.Max(Math.Abs(x0), Math.Abs(xN)), p_C2 + 1) + Math.Pow(result0.Norm(), p_C2 + 1);
+			//h_begin = Math.Pow(1e-5 / delta, 1.0 / (p_C2 + 1));
+
+			var accH_methodC2 = new List<Pair<double, Pair<double, List<double>>>>();
+			var result_methodC2_varH = OduCalculation.Result_VariableH(x0, xN, Y0, methodC2_rk, p_C2, h_begin, ref accH_methodC2);
 			Console.WriteLine("\nDifferent methodC2 with real in last point:");
 			(new Vector(valueInRealFunc(result_methodC2_varH.Last().FirstElement)) - result_methodC2_varH.Last().SecondElement).Show();
 
-			var result_methodMP_varH = OduCalculation.Result_VariableH(x0, xN, Y0, middlePoint_rk, p_C2, h_begin);
-			Console.WriteLine("\nDifferent methodC2 with real in last point:");
+			var accH_methodMP = new List<Pair<double, Pair<double, List<double>>>>();
+			var result_methodMP_varH = OduCalculation.Result_VariableH(x0, xN, Y0, middlePoint_rk, p_C2, h_begin, ref accH_methodMP);
+			Console.WriteLine("\nDifferent methodMP with real in last point:");
 			(new Vector(valueInRealFunc(result_methodMP_varH.Last().FirstElement)) - result_methodMP_varH.Last().SecondElement).Show();
+
+			//ExcelTool.GetInstance().Export_InfoHs("MethodC2_InfoHs", accH_methodC2);
+			//ExcelTool.GetInstance().Export_InfoHs("MethodMP_InfoHs", accH_methodMP);
 
 			//ExcelTool.GetInstance().Export_points_4Func("MethodC2_VarH", result_methodC2_varH, valueInRealFunc);
 			//ExcelTool.GetInstance().Export_points_4Func("MethodMP_VarH", result_methodMP_varH, valueInRealFunc);
@@ -644,6 +655,15 @@ namespace СomputationMath
 
 			//ExcelTool.GetInstance().Export_RealRsOnX("RsOnX_methodC2_hVar", realRsOnX_methodC2_h_var);
 			//ExcelTool.GetInstance().Export_RealRsOnX("RsOnX_methodMP_hVar", realRsOnX_methodMP_h_var);
+
+			var countCallF_onRtol_methodC2 = OduCalculation.CountCallF_onRtol(x0, xN, Y0, methodC2_rk, p_C2, 2);
+			var countCallF_onRtol_methodMP = OduCalculation.CountCallF_onRtol(x0, xN, Y0, middlePoint_rk, p_C2, 2);
+
+			//ExcelTool.GetInstance().Export_CountCallF("CountCallF_methodC2", countCallF_onRtol_methodC2);
+			//ExcelTool.GetInstance().Export_CountCallF("CountCallF_methodMP", countCallF_onRtol_methodMP);
+			#endregion
+
+
 
 		}
 	}
