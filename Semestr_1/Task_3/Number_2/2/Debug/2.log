@@ -1,0 +1,4 @@
+﻿  2.cpp
+c:\users\user\documents\прога\литвинов\дз_3\вижуал\2\2\2.cpp(106): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  2.vcxproj -> C:\Users\user\Documents\Прога\Литвинов\ДЗ_3\Вижуал\2\Debug\2.exe
+  2.vcxproj -> C:\Users\user\Documents\Прога\Литвинов\ДЗ_3\Вижуал\2\Debug\2.pdb (Partial PDB)
